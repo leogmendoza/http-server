@@ -1,0 +1,13 @@
+# Build folders
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/*.exe
+/*.obj
+/*.pdb
+
+# VSCode settings
+.vscode/
+
+# Ignore logs or temporary files if any
+*.log

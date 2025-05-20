@@ -116,24 +116,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named testing
+# Target rules for targets named http_server
 
 # Build rule for target.
-testing: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 testing
-.PHONY : testing
+http_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 http_server
+.PHONY : http_server
 
 # fast build rule for target.
-testing/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\testing.dir\build.make CMakeFiles/testing.dir/build
-.PHONY : testing/fast
+http_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/build
+.PHONY : http_server/fast
 
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
 # target to build an object file
 main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\testing.dir\build.make CMakeFiles/testing.dir/main.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/main.cpp.obj
 .PHONY : main.cpp.obj
 
 main.i: main.cpp.i
@@ -141,7 +141,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\testing.dir\build.make CMakeFiles/testing.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -149,7 +149,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\testing.dir\build.make CMakeFiles/testing.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -160,7 +160,7 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... testing
+	@echo ... http_server
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
