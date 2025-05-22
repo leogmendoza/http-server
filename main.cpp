@@ -13,6 +13,20 @@ int main() {
         return 1;
     }
 
+    // Create listening socket
+    SOCKET server_socket = socket(
+        AF_INET,        // IPv4 address family
+        SOCK_STREAM,    // TCP socket type
+        IPPROTO_TCP     // TCP protocol
+    );
+
+    // Prepare address of listening socket
+    sockaddr_in server_addr{
+        .sin_family = AF_INET,
+        .sin_port = htons(8080),                            // Ensure big-endianness
+        .sin_addr = { .s_addr = inet_addr("127.0.0.1") }
+    };
+
     WSACleanup();
 
     std::cout << "Passed!";
