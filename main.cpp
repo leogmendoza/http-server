@@ -35,6 +35,15 @@ int main() {
         return 1;
     }
 
+    // Begin listening to incoming connections
+    if ( listen(server_socket, SOMAXCONN) == SOCKET_ERROR ) {
+        std::cerr << "Listen failed with error: " << WSAGetLastError() << "\n";
+        closesocket(server_socket);
+        WSACleanup();
+
+        return 1;
+    }
+
     WSACleanup();
 
     std::cout << "Server shut down . . . Xp";
