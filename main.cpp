@@ -44,6 +44,22 @@ int main() {
         return 1;
     }
 
+    // Create socket for a client connection
+    SOCKET client_socket = accept(
+        server_socket,      // Listening socket
+        nullptr,            // Client address
+        nullptr             // Length of client address
+    );
+
+    // Handle client connection error
+    if (client_socket == INVALID_SOCKET) {
+        std::cerr << "Accept failed with error: " << WSAGetLastError() << "\n";
+        closesocket(server_socket);
+        WSACleanup();
+
+        return 1;
+    }
+
     WSACleanup();
 
     std::cout << "Server shut down . . . Xp";
