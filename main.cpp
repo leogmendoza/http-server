@@ -60,6 +60,9 @@ int main() {
         return 1;
     }
 
+    // Clean up connections
+    closesocket(client_socket);
+    closesocket(server_socket);
     WSACleanup();
 
     std::cout << "Server shut down . . . Xp";
