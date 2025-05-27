@@ -6,7 +6,20 @@ class TcpServer {
     public:
         TcpServer() {
             // Initialize Winsock 2.2 (Windows Sockets API)
+            if ( WSAStartup( MAKEWORD(2, 2), &wsa_data ) != 0 ) {
+                throw std::runtime_error("WSAStartup failed!");
+            }
 
+            // Create listening socket
+            SOCKET server_socket = socket(
+                AF_INET,        // IPv4 address family
+                SOCK_STREAM,    // TCP socket type
+                IPPROTO_TCP     // TCP protocol
+            );
+            if (server_socket == INVALID_SOCKET) {
+                WSACleanup();
+                throw std::runtime_error("Listening socket creation failed!");
+            }
         }
 
         ~TcpServer() {
