@@ -2,6 +2,23 @@
 #include <winsock2.h>   // Socket functions and types
 #include <ws2tcpip.h>   // TCP/IP helpers
 
+class TcpServer {
+    public:
+        TcpServer() {
+            // Initialize Winsock 2.2 (Windows Sockets API)
+
+        }
+
+        ~TcpServer() {
+            // Clean up connections
+
+        }
+
+    private:
+        WSADATA wsa_data;
+        SOCKET server_socket;
+};
+
 int main() {
     // Initialize Winsock 2.2 (Windows Sockets API)
     WSADATA wsaData;
