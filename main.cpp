@@ -64,7 +64,7 @@ class TcpServer {
                 throw std::runtime_error("Accept failed!");
             }
 
-            std::cout << "Client connected!\n";
+            std::cout << "Client connected!" << std::endl;
 
             return client_socket;
         }
@@ -75,12 +75,15 @@ class TcpServer {
 };
 
 int main() {
-    // Clean up connections
-    closesocket(client_socket);
-    closesocket(server_socket);
-    WSACleanup();
+    try {
+        TcpServer server;
+        SOCKET client_socket = server.accept_client();
 
-    std::cout << "Server shut down . . . Xp";
+        closesocket(client_socket);
+        std::cout << "Server shut down . . . Xp" << std::endl;
+    } catch (const std::exception &e) {
+        std::cerr << "Error" << e.what() << std::endl;
+    }
 
     return 0;
 }
