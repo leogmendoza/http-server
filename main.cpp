@@ -11,7 +11,7 @@ class TcpServer {
             }
 
             // Create listening socket
-            SOCKET server_socket = socket(
+            server_socket = socket(
                 AF_INET,        // IPv4 address family
                 SOCK_STREAM,    // TCP socket type
                 IPPROTO_TCP     // TCP protocol
@@ -59,8 +59,6 @@ class TcpServer {
 
             // Handle client connection error
             if (client_socket == INVALID_SOCKET) {
-                closesocket(server_socket);
-                WSACleanup();
                 throw std::runtime_error("Accept failed!");
             }
 
@@ -82,7 +80,7 @@ int main() {
         closesocket(client_socket);
         std::cout << "Server shut down . . . Xp" << std::endl;
     } catch (const std::exception &e) {
-        std::cerr << "Error" << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
     }
 
     return 0;
