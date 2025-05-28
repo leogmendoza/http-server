@@ -75,22 +75,30 @@ class TcpServer {
 class Socket {
     public:
         Socket() {
+            // Uninitialized socket handle
             handle = INVALID_SOCKET;
         }
 
         Socket(SOCKET s) {
+            // Assign socket parameter to handle
             handle = s;
         }
 
         ~Socket() {
+            // Clean up valid sockets
             if (handle != INVALID_SOCKET) {
                 closesocket(handle);
             }
         }
 
+        // Prevent duplicate socket handles
+        Socket(const Socket&) = delete;
+        Socket& operator=(const Socket&) = delete;
+
+
     private:
         SOCKET handle;
-}
+};
 
 int main() {
     try {
