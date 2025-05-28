@@ -17,8 +17,7 @@ class TcpServer {
                 IPPROTO_TCP     // TCP protocol
             ));
 
-            if (server_socket_.get() == INVALID_SOCKET) {
-                WSACleanup();
+            if ( !server_socket_.is_valid() ) {
                 throw std::runtime_error("Listening socket creation failed!");
             }
 
@@ -30,13 +29,11 @@ class TcpServer {
 
             // Bind listening socket to the prepared address
             if ( bind( server_socket_.get(), reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr) ) == SOCKET_ERROR ) {
-                WSACleanup();
                 throw std::runtime_error("Bind failed!");
             }
 
             // Begin listening to incoming connections
-            if ( listen(server_socket_.get(), SOMAXCONN) == SOCKET_ERROR ) {
-                WSACleanup();
+            if ( listen( server_socket_.get(), SOMAXCONN ) == SOCKET_ERROR ) {
                 throw std::runtime_error("Listen failed!");
             }
         }
@@ -48,14 +45,14 @@ class TcpServer {
 
         Socket accept_client() {
             // Create socket for a client connection
-            Socket client_socket = Socket(accept(
+            Socket client_socket(accept(
                 server_socket_.get(),      // Listening socket
                 nullptr,            // Client address
                 nullptr             // Length of client address
             ));
 
             // Handle client connection error
-            if (client_socket.get() == INVALID_SOCKET) {
+            if ( !client_socket.is_valid() ) {
                 throw std::runtime_error("Accept failed!");
             }
 
