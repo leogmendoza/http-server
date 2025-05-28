@@ -74,20 +74,15 @@ class TcpServer {
 
 class Socket {
     public:
-        Socket() {
-            // Uninitialized socket handle
-            handle = INVALID_SOCKET;
-        }
+    // Uninitialized socket handle
+        Socket(): handle_(INVALID_SOCKET) { }
 
-        Socket(SOCKET s) {
-            // Assign socket parameter to handle
-            handle = s;
-        }
+        Socket(SOCKET s): handle_(s) { }
 
         ~Socket() {
             // Clean up valid sockets
-            if (handle != INVALID_SOCKET) {
-                closesocket(handle);
+            if (handle_ != INVALID_SOCKET) {
+                closesocket(handle_);
             }
         }
 
@@ -97,26 +92,34 @@ class Socket {
 
         // Initialize by stealing handle from another socket
         Socket(Socket&& other) noexcept {
-            handle = other.handle;
-            other.handle = INVALID_SOCKET;
+            handle_ = other.handle_;
+            other.handle_ = INVALID_SOCKET;
         }
 
         // Transfer ownership from another socket
         Socket& operator=(Socket&& other) noexcept {
             if (this != &other) {
-                if (handle != INVALID_SOCKET) {
-                    closesocket(handle);
+                if (handle_ != INVALID_SOCKET) {
+                    closesocket(handle_);
                 }
             }
             
-            handle = other.handle;
-            other.handle = INVALID_SOCKET;
+            handle_ = other.handle_;
+            other.handle_ = INVALID_SOCKET;
 
             return *this;
         }
 
+        SOCKET get() const {
+            return handle_;
+        }
+
+        bool is_valid() const {
+            return (handle_ != INVALID_SOCKET);
+        }
+
     private:
-        SOCKET handle;
+        SOCKET handle_;
 };
 
 int main() {
