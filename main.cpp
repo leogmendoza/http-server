@@ -95,6 +95,25 @@ class Socket {
         Socket(const Socket&) = delete;
         Socket& operator=(const Socket&) = delete;
 
+        // Initialize by stealing handle from another socket
+        Socket(Socket&& other) noexcept {
+            handle = other.handle;
+            other.handle = INVALID_SOCKET;
+        }
+
+        // Transfer ownership from another socket
+        Socket& operator=(Socket&& other) noexcept {
+            if (this != &other) {
+                if (handle != INVALID_SOCKET) {
+                    closesocket(handle);
+                }
+            }
+            
+            handle = other.handle;
+            other.handle = INVALID_SOCKET;
+
+            return *this;
+        }
 
     private:
         SOCKET handle;
