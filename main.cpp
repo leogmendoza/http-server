@@ -1,6 +1,58 @@
 #include <iostream>
 #include <winsock2.h>   // Socket functions and types
 #include <ws2tcpip.h>   // TCP/IP helpers
+#include <thread>
+
+class Socket {
+    public:
+        // Uninitialized socket handle
+        Socket(): handle_(INVALID_SOCKET) { }
+
+        // Assign socket parameter to handle
+        Socket(SOCKET s): handle_(s) { }
+
+        ~Socket() {
+            // Clean up valid sockets
+            if (handle_ != INVALID_SOCKET) {
+                closesocket(handle_);
+            }
+        }
+
+        // Prevent duplicate socket handles
+        Socket(const Socket&) = delete;
+        Socket& operator=(const Socket&) = delete;
+
+        // Initialize by stealing handle from another socket
+        Socket(Socket&& other) noexcept {
+            handle_ = other.handle_;
+            other.handle_ = INVALID_SOCKET;
+        }
+
+        // Transfer ownership from another socket
+        Socket& operator=(Socket&& other) noexcept {
+            if (this != &other) {
+                if (handle_ != INVALID_SOCKET) {
+                    closesocket(handle_);
+                }
+            }
+            
+            handle_ = other.handle_;
+            other.handle_ = INVALID_SOCKET;
+
+            return *this;
+        }
+
+        SOCKET get() const {
+            return handle_;
+        }
+
+        bool is_valid() const {
+            return (handle_ != INVALID_SOCKET);
+        }
+
+    private:
+        SOCKET handle_;
+};
 
 class TcpServer {
     public:
@@ -64,57 +116,6 @@ class TcpServer {
     private:
         WSADATA wsa_data_;
         Socket server_socket_;
-};
-
-class Socket {
-    public:
-        // Uninitialized socket handle
-        Socket(): handle_(INVALID_SOCKET) { }
-
-        // Assign socket parameter to handle
-        Socket(SOCKET s): handle_(s) { }
-
-        ~Socket() {
-            // Clean up valid sockets
-            if (handle_ != INVALID_SOCKET) {
-                closesocket(handle_);
-            }
-        }
-
-        // Prevent duplicate socket handles
-        Socket(const Socket&) = delete;
-        Socket& operator=(const Socket&) = delete;
-
-        // Initialize by stealing handle from another socket
-        Socket(Socket&& other) noexcept {
-            handle_ = other.handle_;
-            other.handle_ = INVALID_SOCKET;
-        }
-
-        // Transfer ownership from another socket
-        Socket& operator=(Socket&& other) noexcept {
-            if (this != &other) {
-                if (handle_ != INVALID_SOCKET) {
-                    closesocket(handle_);
-                }
-            }
-            
-            handle_ = other.handle_;
-            other.handle_ = INVALID_SOCKET;
-
-            return *this;
-        }
-
-        SOCKET get() const {
-            return handle_;
-        }
-
-        bool is_valid() const {
-            return (handle_ != INVALID_SOCKET);
-        }
-
-    private:
-        SOCKET handle_;
 };
 
 int main() {
