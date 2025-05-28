@@ -72,6 +72,26 @@ class TcpServer {
         SOCKET server_socket;
 };
 
+class Socket {
+    public:
+        Socket() {
+            handle = INVALID_SOCKET;
+        }
+
+        Socket(SOCKET s) {
+            handle = s;
+        }
+
+        ~Socket() {
+            if (handle != INVALID_SOCKET) {
+                closesocket(handle);
+            }
+        }
+
+    private:
+        SOCKET handle;
+}
+
 int main() {
     try {
         TcpServer server;
