@@ -46,7 +46,8 @@ class TcpServer {
 
         ~TcpServer() {
             // Clean up connections
-
+            closesocket(server_socket);
+            WSACleanup();
         }
 
     private:
