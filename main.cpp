@@ -11,13 +11,13 @@ class TcpServer {
             }
 
             // Create listening socket
-            server_socket = socket(
+            server_socket = Socket(socket(
                 AF_INET,        // IPv4 address family
                 SOCK_STREAM,    // TCP socket type
                 IPPROTO_TCP     // TCP protocol
-            );
+            ));
 
-            if (server_socket == INVALID_SOCKET) {
+            if (server_socket.get() == INVALID_SOCKET) {
                 WSACleanup();
                 throw std::runtime_error("Listening socket creation failed!");
             }
@@ -29,15 +29,15 @@ class TcpServer {
             server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
             // Bind listening socket to the prepared address
-            if ( bind( server_socket, reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr) ) == SOCKET_ERROR ) {
-                closesocket(server_socket);
+            if ( bind( server_socket.get(), reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr) ) == SOCKET_ERROR ) {
+                closesocket(server_socket.get());
                 WSACleanup();
                 throw std::runtime_error("Bind failed!");
             }
 
             // Begin listening to incoming connections
-            if ( listen(server_socket, SOMAXCONN) == SOCKET_ERROR ) {
-                closesocket(server_socket);
+            if ( listen(server_socket.get(), SOMAXCONN) == SOCKET_ERROR ) {
+                closesocket(server_socket.get());
                 WSACleanup();
                 throw std::runtime_error("Listen failed!");
             }
@@ -45,20 +45,20 @@ class TcpServer {
 
         ~TcpServer() {
             // Clean up connections
-            closesocket(server_socket);
+            closesocket(server_socket.get());
             WSACleanup();
         }
 
-        SOCKET accept_client() {
+        Socket accept_client() {
             // Create socket for a client connection
-            SOCKET client_socket = accept(
-                server_socket,      // Listening socket
+            Socket client_socket = Socket(accept(
+                server_socket.get(),      // Listening socket
                 nullptr,            // Client address
                 nullptr             // Length of client address
-            );
+            ));
 
             // Handle client connection error
-            if (client_socket == INVALID_SOCKET) {
+            if (client_socket.get() == INVALID_SOCKET) {
                 throw std::runtime_error("Accept failed!");
             }
 
@@ -69,7 +69,7 @@ class TcpServer {
 
     private:
         WSADATA wsa_data;
-        SOCKET server_socket;
+        Socket server_socket;
 };
 
 class Socket {
@@ -125,9 +125,8 @@ class Socket {
 int main() {
     try {
         TcpServer server;
-        SOCKET client_socket = server.accept_client();
+        Socket client_socket = server.accept_client();
 
-        closesocket(client_socket);
         std::cout << "Server shut down . . . Xp" << std::endl;
     } catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
