@@ -6,18 +6,18 @@ class TcpServer {
     public:
         TcpServer() {
             // Initialize Winsock 2.2 (Windows Sockets API)
-            if ( WSAStartup( MAKEWORD(2, 2), &wsa_data ) != 0 ) {
+            if ( WSAStartup( MAKEWORD(2, 2), &wsa_data_ ) != 0 ) {
                 throw std::runtime_error("WSAStartup failed!");
             }
 
             // Create listening socket
-            server_socket = Socket(socket(
+            server_socket_ = Socket(socket(
                 AF_INET,        // IPv4 address family
                 SOCK_STREAM,    // TCP socket type
                 IPPROTO_TCP     // TCP protocol
             ));
 
-            if (server_socket.get() == INVALID_SOCKET) {
+            if (server_socket_.get() == INVALID_SOCKET) {
                 WSACleanup();
                 throw std::runtime_error("Listening socket creation failed!");
             }
@@ -29,15 +29,13 @@ class TcpServer {
             server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
             // Bind listening socket to the prepared address
-            if ( bind( server_socket.get(), reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr) ) == SOCKET_ERROR ) {
-                closesocket(server_socket.get());
+            if ( bind( server_socket_.get(), reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr) ) == SOCKET_ERROR ) {
                 WSACleanup();
                 throw std::runtime_error("Bind failed!");
             }
 
             // Begin listening to incoming connections
-            if ( listen(server_socket.get(), SOMAXCONN) == SOCKET_ERROR ) {
-                closesocket(server_socket.get());
+            if ( listen(server_socket_.get(), SOMAXCONN) == SOCKET_ERROR ) {
                 WSACleanup();
                 throw std::runtime_error("Listen failed!");
             }
@@ -45,14 +43,13 @@ class TcpServer {
 
         ~TcpServer() {
             // Clean up connections
-            closesocket(server_socket.get());
             WSACleanup();
         }
 
         Socket accept_client() {
             // Create socket for a client connection
             Socket client_socket = Socket(accept(
-                server_socket.get(),      // Listening socket
+                server_socket_.get(),      // Listening socket
                 nullptr,            // Client address
                 nullptr             // Length of client address
             ));
@@ -68,15 +65,16 @@ class TcpServer {
         }
 
     private:
-        WSADATA wsa_data;
-        Socket server_socket;
+        WSADATA wsa_data_;
+        Socket server_socket_;
 };
 
 class Socket {
     public:
-    // Uninitialized socket handle
+        // Uninitialized socket handle
         Socket(): handle_(INVALID_SOCKET) { }
 
+        // Assign socket parameter to handle
         Socket(SOCKET s): handle_(s) { }
 
         ~Socket() {
