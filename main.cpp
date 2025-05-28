@@ -37,7 +37,6 @@ class TcpServer {
 
             // Begin listening to incoming connections
             if ( listen(server_socket, SOMAXCONN) == SOCKET_ERROR ) {
-                std::cerr << "Listen failed with error: " << WSAGetLastError() << "\n";
                 closesocket(server_socket);
                 WSACleanup();
                 throw std::runtime_error("Listen failed!");
@@ -50,28 +49,32 @@ class TcpServer {
             WSACleanup();
         }
 
+        SOCKET accept_client() {
+            // Create socket for a client connection
+            SOCKET client_socket = accept(
+                server_socket,      // Listening socket
+                nullptr,            // Client address
+                nullptr             // Length of client address
+            );
+
+            // Handle client connection error
+            if (client_socket == INVALID_SOCKET) {
+                closesocket(server_socket);
+                WSACleanup();
+                throw std::runtime_error("Accept failed!");
+            }
+
+            std::cout << "Client connected!\n";
+
+            return client_socket;
+        }
+
     private:
         WSADATA wsa_data;
         SOCKET server_socket;
 };
 
 int main() {
-    // Create socket for a client connection
-    SOCKET client_socket = accept(
-        server_socket,      // Listening socket
-        nullptr,            // Client address
-        nullptr             // Length of client address
-    );
-
-    // Handle client connection error
-    if (client_socket == INVALID_SOCKET) {
-        std::cerr << "Accept failed with error: " << WSAGetLastError() << "\n";
-        closesocket(server_socket);
-        WSACleanup();
-
-        return 1;
-    }
-
     // Clean up connections
     closesocket(client_socket);
     closesocket(server_socket);
