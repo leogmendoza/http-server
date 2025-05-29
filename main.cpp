@@ -1,7 +1,7 @@
 #include <iostream>
 #include <winsock2.h>   // Socket functions and types
 #include <ws2tcpip.h>   // TCP/IP helpers
-#include <thread>
+#include <thread>       // Multithreading
 
 class Socket {
     public:
@@ -117,6 +117,14 @@ class TcpServer {
         WSADATA wsa_data_;
         Socket server_socket_;
 };
+
+void handle_client(Socket client_socket) {
+    std::cout << "Client handler started for socket " << client_socket.get() << std::endl;
+
+    /* LOGIC - UNDER CONSTRUCTION! */
+
+    std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
+}
 
 int main() {
     try {
