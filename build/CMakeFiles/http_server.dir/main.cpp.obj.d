@@ -371,4 +371,26 @@ CMakeFiles/http_server.dir/main.cpp.obj: \
  C:/msys64/ucrt64/include/qos.h C:/msys64/ucrt64/include/ws2tcpip.h \
  C:/msys64/ucrt64/include/ws2ipdef.h C:/msys64/ucrt64/include/in6addr.h \
  C:/msys64/ucrt64/include/psdk_inc/_ip_mreq1.h \
- C:/msys64/ucrt64/include/mstcpip.h
+ C:/msys64/ucrt64/include/mstcpip.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/thread \
+ C:/msys64/ucrt64/include/c++/15.1.0/stop_token \
+ C:/msys64/ucrt64/include/c++/15.1.0/atomic \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/atomic_base.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/atomic_lockfree_defines.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/atomic_wait.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/cstdint \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stdint.h \
+ C:/msys64/ucrt64/include/stdint.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/std_mutex.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/std_thread.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/unique_ptr.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/semaphore \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/semaphore_base.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/chrono.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/ratio \
+ C:/msys64/ucrt64/include/c++/15.1.0/limits \
+ C:/msys64/ucrt64/include/c++/15.1.0/ctime \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/parse_numbers.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/atomic_timed_wait.h \
+ C:/msys64/ucrt64/include/c++/15.1.0/bits/this_thread_sleep.h \
+ C:/msys64/ucrt64/include/semaphore.h

@@ -131,10 +131,10 @@ int main() {
         TcpServer server;
         Socket client_socket = server.accept_client();
 
-        // Create a new thread
+        // Create new thread to handle a socket
         std::thread client_thread( handle_client, std::move(client_socket) );
 
-        // Run thread independently
+        // Run socket handler thread independently
         client_thread.detach();
 
         std::cout << "Server shut down . . . Xp" << std::endl;
