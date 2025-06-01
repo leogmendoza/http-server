@@ -125,9 +125,20 @@ void handle_client(Socket client_socket) {
     int bytes_received;
 
     while (true) {
+        // Read data from connected socket
         bytes_received = recv( client_socket.get(), buffer, sizeof(buffer) -1, 0 );
 
-        
+        if (bytes_received > 0) {
+            // Null-terminate if successful
+            buffer[bytes_received] = '\0';
+            std::cout << "Received: " << buffer << std::endl;
+        } else if (bytes_received == 0) {
+            std::cout << "Client disconnected!" << std::endl;
+            break;
+        } else {
+            std::cerr << "recv() failed!" << std::endl;
+            break;
+        }
     }
 
     std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
