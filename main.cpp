@@ -119,29 +119,35 @@ class TcpServer {
 };
 
 void handle_client(Socket client_socket) {
-    std::cout << "Client handler started for socket " << client_socket.get() << std::endl;
+    try {
+        std::cout << "Client handler started for socket " << client_socket.get() << std::endl;
 
-    char buffer[1024];
-    int bytes_received;
+        char buffer[1024];
+        int bytes_received;
 
-    while (true) {
-        // Read data from connected socket
-        bytes_received = recv( client_socket.get(), buffer, sizeof(buffer) -1, 0 );
+        while (true) {
+            // Read data from connected socket
+            bytes_received = recv( client_socket.get(), buffer, sizeof(buffer) -1, 0 );
 
-        if (bytes_received > 0) {
-            // Null-terminate if successful
-            buffer[bytes_received] = '\0';
-            std::cout << "Received: " << buffer << std::endl;
-        } else if (bytes_received == 0) {
-            std::cout << "Client disconnected!" << std::endl;
-            break;
-        } else {
-            std::cerr << "recv() failed!" << std::endl;
-            break;
+            if (bytes_received > 0) {
+                // Null-terminate if successful
+                buffer[bytes_received] = '\0';
+                std::cout << "Received: " << buffer << std::endl;
+            } else if (bytes_received == 0) {
+                std::cout << "Client disconnected!" << std::endl;
+                break;
+            } else {
+                std::cerr << "recv() failed!" << std::endl;
+                break;
+            }
         }
-    }
 
-    std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
+        std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Exception in client handler: " << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown exception in client handler . . ." << std::endl;
+    }
 }
 
 int main() {
