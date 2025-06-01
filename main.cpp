@@ -121,7 +121,14 @@ class TcpServer {
 void handle_client(Socket client_socket) {
     std::cout << "Client handler started for socket " << client_socket.get() << std::endl;
 
-    /* LOGIC - UNDER CONSTRUCTION! */
+    char buffer[1024];
+    int bytes_received;
+
+    while (true) {
+        bytes_received = recv( client_socket.get(), buffer, sizeof(buffer) -1, 0 );
+
+        
+    }
 
     std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
 }
