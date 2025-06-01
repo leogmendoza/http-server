@@ -128,11 +128,16 @@ void handle_client(Socket client_socket) {
 
         while (true) {
             // Read data from connected socket
-            bytes_received = recv( client_socket.get(), buffer, sizeof(buffer) -1, 0 );
+            bytes_received = recv( client_socket.get(), buffer, sizeof(buffer), 0 );
 
             if (bytes_received > 0) {
                 // Stockpile bytes in a string
                 request_data.append(buffer, bytes_received);
+
+                // Check for end of HTTP request header
+                if ( request_data.find("\r\n\r\n") != std::string::npos ) {
+                    break;
+                }
 
             } else if (bytes_received == 0) {
                 // Gracefully close connection
@@ -148,7 +153,9 @@ void handle_client(Socket client_socket) {
         }
 
         // For testing
-        std::cout << "Full HTTP Request: " << request_data << std::endl;
+        std::cout << "====================\n";
+        std::cout << "Full HTTP Request:\n" << request_data << std::endl;
+        std::cout << "====================\n";
 
         std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
     } catch (const std::exception& e) {
