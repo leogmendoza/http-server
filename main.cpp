@@ -134,9 +134,11 @@ void handle_client(Socket client_socket) {
                 buffer[bytes_received] = '\0';
                 std::cout << "Received: " << buffer << std::endl;
             } else if (bytes_received == 0) {
+                // Gracefully close connection
                 std::cout << "Client disconnected!" << std::endl;
                 break;
             } else {
+                // Note: For some reason, curl does not gracefully disconnect :/
                 std::cerr << "recv() failed!" << std::endl;
                 break;
             }
