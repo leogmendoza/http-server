@@ -153,18 +153,25 @@ void handle_client(Socket client_socket) {
 int main() {
     try {
         TcpServer server;
-        Socket client_socket = server.accept_client();
 
-        // Create new thread to handle a socket
-        std::thread client_thread( handle_client, std::move(client_socket) );
+        while (true) {
+            try {
+                Socket client_socket = server.accept_client();
 
-        // Run socket handler thread independently
-        client_thread.detach();
+                // Create new thread to handle a socket
+                std::thread client_thread( handle_client, std::move(client_socket) );
 
-        std::cout << "Server shut down . . . Xp" << std::endl;
+                // Run socket handler thread independently
+                client_thread.detach();
+            } catch (const std::exception &e) {
+                std::cerr << "Client error: " << e.what() << std::endl;
+            }
+        }
     } catch (const std::exception &e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << "Server error: " << e.what() << std::endl;
     }
+
+    std::cout << "Server shut down . . . Xp" << std::endl;
 
     return 0;
 }
