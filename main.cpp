@@ -124,25 +124,31 @@ void handle_client(Socket client_socket) {
 
         char buffer[1024];
         int bytes_received;
+        std::string request_data;
 
         while (true) {
             // Read data from connected socket
             bytes_received = recv( client_socket.get(), buffer, sizeof(buffer) -1, 0 );
 
             if (bytes_received > 0) {
-                // Null-terminate if successful
-                buffer[bytes_received] = '\0';
-                std::cout << "Received: " << buffer << std::endl;
+                // Stockpile bytes in a string
+                request_data.append(buffer, bytes_received);
+
             } else if (bytes_received == 0) {
                 // Gracefully close connection
                 std::cout << "Client disconnected!" << std::endl;
+
                 break;
             } else {
                 // Note: For some reason, curl does not gracefully disconnect :/
                 std::cerr << "recv() failed!" << std::endl;
+
                 break;
             }
         }
+
+        // For testing
+        std::cout << "Full HTTP Request: " << request_data << std::endl;
 
         std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
     } catch (const std::exception& e) {
