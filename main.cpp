@@ -190,18 +190,22 @@ void handle_client(Socket client_socket) {
 }
 
 std::optional<HttpRequestLine> parse_request_line(const std::string& request_data) {
-    // Read the request line
     std::istringstream request_stream(request_data);
     std::string request_line;
+    std::istringstream line_stream(request_line);
+    std::string method, path, version;
 
+    // Strip trailing carriage return
+    if ( !request_line.empty() && request_line.back() == '\r' ) {
+        request_line.pop_back();
+    }
+
+    // Read the request line
     if ( !std::getline(request_stream, request_line) ) {
         return std::nullopt;
     }
 
     // Split request line into tokens
-    std::istringstream line_stream(request_line);
-    std::string method, path, version;
-
     if ( !(((line_stream >> method) >> path) >> version) ) {
         return std::nullopt;
     }
