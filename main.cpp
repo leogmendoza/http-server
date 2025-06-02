@@ -180,12 +180,17 @@ std::optional<HttpRequestLine> parse_request_line(const std::string& request_dat
     std::istringstream request_stream(request_data);
     std::string request_line;
     
-    std::getline(request_stream, request_line);
+    if ( !std::getline(request_stream, request_line) ) {
+        return std::nullopt;
+    }
 
     // Split request line into tokens
     std::istringstream line_stream(request_line);
     std::string method, path, version;
-    (((line_stream >> method) >> path) >> version);
+
+    if ( !(((line_stream >> method) >> path) >> version) ) {
+        return std::nullopt;
+    }
 
     return HttpRequestLine{ method, path, version };
 }
