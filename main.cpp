@@ -165,7 +165,19 @@ void handle_client(Socket client_socket) {
         std::cout << "Full HTTP Request:\n" << request_data << std::endl;
         std::cout << "====================\n";
 
-        // HTTP Parsing
+        // Parse HTTP request line
+        std::optional<HttpRequestLine> parsed = parse_request_line(request_data);
+
+        if (!parsed) {
+            std::cerr << "Failed to parse HTTP request line :(" << std::endl;
+
+            return;
+        }
+
+        std::cout << "Parsed Request Line:" << std::endl;
+        std::cout << "Method: " << parsed->method << std::endl;
+        std::cout << "Path: " << parsed->path << std::endl;
+        std::cout << "Version: " << parsed->version << std::endl;
 
         std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
     } catch (const std::exception& e) {
@@ -179,7 +191,7 @@ std::optional<HttpRequestLine> parse_request_line(const std::string& request_dat
     // Read the request line
     std::istringstream request_stream(request_data);
     std::string request_line;
-    
+
     if ( !std::getline(request_stream, request_line) ) {
         return std::nullopt;
     }
