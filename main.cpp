@@ -1,7 +1,14 @@
 #include <iostream>
+#include <optional>
+#include <thread>       // Multithreading
 #include <winsock2.h>   // Socket functions and types
 #include <ws2tcpip.h>   // TCP/IP helpers
-#include <thread>       // Multithreading
+
+struct HttpRequestLine {
+    std::string method;
+    std::string path;
+    std::string version;
+};
 
 class Socket {
     public:
@@ -157,12 +164,18 @@ void handle_client(Socket client_socket) {
         std::cout << "Full HTTP Request:\n" << request_data << std::endl;
         std::cout << "====================\n";
 
+        // HTTP Parsing
+
         std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Exception in client handler: " << e.what() << std::endl;
     } catch (...) {
         std::cerr << "Unknown exception in client handler . . ." << std::endl;
     }
+}
+
+std::optional<HttpRequestLine> parse_request_line(const std::string& request_data) {
+    
 }
 
 int main() {
