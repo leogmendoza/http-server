@@ -36,6 +36,7 @@ CMakeFiles/http_server.dir/main.cpp.obj: C:/Users/Leo/Documents/Projects/http-se
   C:/msys64/ucrt64/include/c++/15.1.0/bits/cpp_type_traits.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/cxxabi_forced.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/cxxabi_init_exception.h \
+  C:/msys64/ucrt64/include/c++/15.1.0/bits/enable_special_members.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/exception.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/exception_defines.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/exception_ptr.h \
@@ -71,6 +72,7 @@ CMakeFiles/http_server.dir/main.cpp.obj: C:/Users/Leo/Documents/Projects/http-se
   C:/msys64/ucrt64/include/c++/15.1.0/bits/refwrap.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/requires_hosted.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/semaphore_base.h \
+  C:/msys64/ucrt64/include/c++/15.1.0/bits/sstream.tcc \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/std_abs.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/std_mutex.h \
   C:/msys64/ucrt64/include/c++/15.1.0/bits/std_thread.h \
@@ -119,10 +121,12 @@ CMakeFiles/http_server.dir/main.cpp.obj: C:/Users/Leo/Documents/Projects/http-se
   C:/msys64/ucrt64/include/c++/15.1.0/limits \
   C:/msys64/ucrt64/include/c++/15.1.0/new \
   C:/msys64/ucrt64/include/c++/15.1.0/numbers \
+  C:/msys64/ucrt64/include/c++/15.1.0/optional \
   C:/msys64/ucrt64/include/c++/15.1.0/ostream \
   C:/msys64/ucrt64/include/c++/15.1.0/pstl/pstl_config.h \
   C:/msys64/ucrt64/include/c++/15.1.0/ratio \
   C:/msys64/ucrt64/include/c++/15.1.0/semaphore \
+  C:/msys64/ucrt64/include/c++/15.1.0/sstream \
   C:/msys64/ucrt64/include/c++/15.1.0/stdexcept \
   C:/msys64/ucrt64/include/c++/15.1.0/stdlib.h \
   C:/msys64/ucrt64/include/c++/15.1.0/stop_token \
@@ -483,6 +487,8 @@ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/xopintrin.h:
 
 C:/msys64/ucrt64/include/imm.h:
 
+C:/msys64/ucrt64/include/c++/15.1.0/sstream:
+
 C:/msys64/ucrt64/include/_mingw.h:
 
 C:/msys64/ucrt64/include/mmiscapi2.h:
@@ -625,6 +631,14 @@ C:/msys64/ucrt64/include/winnetwk.h:
 
 C:/msys64/ucrt64/include/c++/15.1.0/bits/cxxabi_init_exception.h:
 
+C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/mwaitintrin.h:
+
+C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/avx512vp2intersectintrin.h:
+
+C:/msys64/ucrt64/include/c++/15.1.0/bits/enable_special_members.h:
+
+C:/msys64/ucrt64/include/c++/15.1.0/bits/istream.tcc:
+
 C:/msys64/ucrt64/include/c++/15.1.0/bits/string_view.tcc:
 
 C:/msys64/ucrt64/include/c++/15.1.0/bits/exception.h:
@@ -644,12 +658,6 @@ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/avx512ifmaintrin.h:
 C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/gthr.h:
 
 C:/msys64/ucrt64/include/c++/15.1.0/bits/ios_base.h:
-
-C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/mwaitintrin.h:
-
-C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/avx512vp2intersectintrin.h:
-
-C:/msys64/ucrt64/include/c++/15.1.0/bits/istream.tcc:
 
 C:/msys64/ucrt64/include/tvout.h:
 
@@ -680,6 +688,8 @@ C:/msys64/ucrt64/include/joystickapi.h:
 C:/msys64/ucrt64/include/c++/15.1.0/bits/ranges_util.h:
 
 C:/msys64/ucrt64/include/c++/15.1.0/bits/refwrap.h:
+
+C:/msys64/ucrt64/include/c++/15.1.0/bits/sstream.tcc:
 
 C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/tbmintrin.h:
 
@@ -834,6 +844,8 @@ C:/msys64/ucrt64/include/psdk_inc/_socket_types.h:
 C:/msys64/ucrt64/include/c++/15.1.0/new:
 
 C:/msys64/ucrt64/include/c++/15.1.0/numbers:
+
+C:/msys64/ucrt64/include/c++/15.1.0/optional:
 
 C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/avx10_2-512convertintrin.h:
 
