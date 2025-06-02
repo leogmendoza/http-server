@@ -11,6 +11,9 @@ struct HttpRequestLine {
     std::string version;
 };
 
+void handle_client(Socket client_socket);
+std::optional<HttpRequestLine> parse_request_line(const std::string& request_data);
+
 class Socket {
     public:
         // Uninitialized socket handle
