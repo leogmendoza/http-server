@@ -182,6 +182,13 @@ void handle_client(Socket client_socket) {
         std::cout << "Path: " << parsed->path << std::endl;
         std::cout << "Version: " << parsed->version << std::endl;
 
+        // Respond to client
+        std::string body = "Hello, client!";
+        std::string response = build_http_response(body);
+
+
+        int bytes_sent = send( client_socket.get(), response.c_str(), static_cast<int>(response.size()), 0 );
+
         std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Exception in client handler: " << e.what() << std::endl;
@@ -218,6 +225,7 @@ std::optional<HttpRequestLine> parse_request_line(const std::string& request_dat
 std::string build_http_response(const std::string& body) {
     std::ostringstream response_stream;
 
+    // Prepare status line, a couple headers, and the text body
     response_stream << "HTTP/1.1 200 OK\r\n"
                     << "Content-Type: text/plain\r\n"
                     << "Content-Length: " << body.length() << "\r\n"
