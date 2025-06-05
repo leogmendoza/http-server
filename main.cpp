@@ -183,11 +183,15 @@ void handle_client(Socket client_socket) {
         std::cout << "Version: " << parsed->version << std::endl;
 
         // Respond to client
+        int bytes_sent;
         std::string body = "Hello, client!";
         std::string response = build_http_response(body);
 
+        bytes_sent = send( client_socket.get(), response.c_str(), static_cast<int>( response.size() ), 0 );
 
-        int bytes_sent = send( client_socket.get(), response.c_str(), static_cast<int>(response.size()), 0 );
+        if (bytes_sent == SOCKET_ERROR) {
+            std::cerr << "recv() failed!" << std::endl;
+        }
 
         std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
     } catch (const std::exception& e) {
