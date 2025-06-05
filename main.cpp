@@ -187,7 +187,7 @@ void handle_client(Socket client_socket) {
         std::string body = "Hello, client!";
         std::string response = build_http_response(body);
 
-        // Note: Test using the cmd "curl.exe -i http://localhost:8080" to see raw response
+        // Note: Test using "curl.exe -i http://localhost:8080" to see raw response
         bytes_sent = send( client_socket.get(), response.c_str(), static_cast<int>( response.size() ), 0 );
 
         if (bytes_sent == SOCKET_ERROR) {
