@@ -216,7 +216,15 @@ std::optional<HttpRequestLine> parse_request_line(const std::string& request_dat
 }
 
 std::string build_http_response(const std::string& body) {
-    break;
+    std::ostringstream response_stream;
+
+    response_stream << "HTTP/1.1 200 OK\r\n"
+                    << "Content-Type: text/plain\r\n"
+                    << "Content-Length: " << body.length() << "\r\n"
+                    << "\r\n"
+                    << body;
+
+    return response_stream.str();
 }
 
 int main() {
