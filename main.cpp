@@ -12,6 +12,7 @@ struct HttpRequestLine {
 };
 
 std::optional<HttpRequestLine> parse_request_line(const std::string& request_data);
+std::string build_http_response(const std::string& body);
 
 class Socket {
     public:
@@ -212,6 +213,10 @@ std::optional<HttpRequestLine> parse_request_line(const std::string& request_dat
     }
 
     return HttpRequestLine{ method, path, version };
+}
+
+std::string build_http_response(const std::string& body) {
+    break;
 }
 
 int main() {
