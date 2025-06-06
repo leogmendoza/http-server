@@ -177,10 +177,20 @@ void handle_client(Socket client_socket) {
             return;
         }
 
+        // Test parsing
         std::cout << "Parsed Request Line:" << std::endl;
         std::cout << "Method: " << parsed->method << std::endl;
         std::cout << "Path: " << parsed->path << std::endl;
         std::cout << "Version: " << parsed->version << std::endl;
+
+        // Path handling -- TO DO: Move out / In general, split up handle_client
+        if (parsed->path == "/") {
+            std::cout << "[TEST] Handling root path '/'" << std::endl;
+        } else if (parsed->path == "/about") {
+            std::cout << "[TEST] This is Leo's HTTP server >B) '/'" << std::endl;
+        } else {
+            std::cout << "[TEST] Ermmm.. unexpected path: " << parsed->path << std::endl;
+        }
 
         // Respond to client
         int bytes_sent;
