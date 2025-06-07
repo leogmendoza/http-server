@@ -183,19 +183,23 @@ void handle_client(Socket client_socket) {
         std::cout << "Path: " << parsed->path << std::endl;
         std::cout << "Version: " << parsed->version << std::endl;
 
-        // Path handling -- TO DO: Move out / In general, split up handle_client
-        if (parsed->path == "/") {
-            std::cout << "[TEST] Handling root path '/'" << std::endl;
-        } else if (parsed->path == "/about") {
-            std::cout << "[TEST] This is Leo's HTTP server >B) '/'" << std::endl;
-        } else {
-            std::cout << "[TEST] Ermmm.. unexpected path: " << parsed->path << std::endl;
-        }
-
         // Respond to client
         int bytes_sent;
-        std::string body = "Hello, client!";
-        std::string response = build_http_response(body);
+        std::string body;
+        std::string status_line = "HTTP/1.1 200 OK";
+        std::string content_type = "text/plain";
+
+        // Path handling -- TO DO: Move out / In general, split up handle_client
+        if (parsed->path == "/") {
+            body = "[TEST] You're at root!";
+        } else if (parsed->path == "/about") {
+            body =  "[TEST] This is Leo's HTTP server >B) '/'";
+        } else {
+            status_line = "HTTP/1.1 404 Not Found";
+            body = "[TEST] Ermmm.. unexpected path D:";
+        }
+
+        std::string response = build_http_response(status_line, content_type, body);
 
         // Note: Test using "curl.exe -i http://localhost:8080" to see raw response
         bytes_sent = send( client_socket.get(), response.c_str(), static_cast<int>( response.size() ), 0 );
@@ -237,12 +241,12 @@ std::optional<HttpRequestLine> parse_request_line(const std::string& request_dat
     return HttpRequestLine{ method, path, version };
 }
 
-std::string build_http_response(const std::string& body) {
+std::string build_http_response(const std::string& status_line, const std::string& content_type, const std::string& body) {
     std::ostringstream response_stream;
 
     // Prepare status line, a couple headers, and the text body
-    response_stream << "HTTP/1.1 200 OK\r\n"
-                    << "Content-Type: text/plain\r\n"
+    response_stream << status_line << "\r\n"
+                    << "Content-Type: " << content_type << "\r\n"
                     << "Content-Length: " << body.length() << "\r\n"
                     << "\r\n"
                     << body;
