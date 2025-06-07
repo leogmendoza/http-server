@@ -12,7 +12,7 @@ struct HttpRequestLine {
 };
 
 std::optional<HttpRequestLine> parse_request_line(const std::string& request_data);
-std::string build_http_response(const std::string& body);
+std::string build_http_response(const std::string& status_line, const std::string& content_type, const std::string& body);
 
 class Socket {
     public:
@@ -193,7 +193,7 @@ void handle_client(Socket client_socket) {
         if (parsed->path == "/") {
             body = "[TEST] You're at root!";
         } else if (parsed->path == "/about") {
-            body =  "[TEST] This is Leo's HTTP server >B) '/'";
+            body =  "[TEST] This is Leo's HTTP server >B)";
         } else {
             status_line = "HTTP/1.1 404 Not Found";
             body = "[TEST] Ermmm.. unexpected path D:";
