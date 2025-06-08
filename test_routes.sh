@@ -12,9 +12,7 @@ for path in "${!routes[@]}"; do
     echo "=== Testing: $path ==="
     response=$(curl -s -i http://localhost:8080$path)
 
-    # Response headers
-    echo "$response" | head -n 1
-    echo "$response" | grep -i "Content-Type"
+    # Print full response
     echo "$response"
 
     # Check for expected keyword

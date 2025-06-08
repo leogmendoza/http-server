@@ -107,12 +107,14 @@ class TcpServer {
             WSACleanup();
         }
 
-        Socket accept_client() {
+        Socket accept_client(sockaddr_in& client_addr_output) {
+            int addr_len = sizeof(client_addr_output);
+
             // Create socket for a client connection
             Socket client_socket(accept(
-                server_socket_.get(),      // Listening socket
-                nullptr,            // Client address
-                nullptr             // Length of client address
+                server_socket_.get(),                               // Listening socket
+                reinterpret_cast<sockaddr*>(&client_addr_output),   // Client address
+                &addr_len                                           // Length of client address
             ));
 
             // Handle client connection error
@@ -130,9 +132,15 @@ class TcpServer {
         Socket server_socket_;
 };
 
-void handle_client(Socket client_socket) {
+void handle_client(Socket client_socket, sockaddr_in client_addr) {
     try {
-        std::cout << "Client handler started for socket " << client_socket.get() << std::endl;
+        // Log socket number and client IP address
+        std::cout << "[INFO] Client handler started for socket " << client_socket.get() << std::endl;
+
+        char ip_str[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &(client_addr.sin_addr), ip_str, INET_ADDRSTRLEN);
+
+        std::cout << "[INFO] Connection from " << ip_str << std::endl;
 
         // Receiving
         char buffer[1024];
@@ -179,11 +187,10 @@ void handle_client(Socket client_socket) {
             return;
         }
 
-        // Test parsing
-        std::cout << "Parsed Request Line:" << std::endl;
-        std::cout << "Method: " << parsed->method << std::endl;
-        std::cout << "Path: " << parsed->path << std::endl;
-        std::cout << "Version: " << parsed->version << std::endl;
+        // Log parsed request
+        std::cout << "[INFO] Method: " << parsed->method << std::endl;
+        std::cout << "[INFO] Path: " << parsed->path << std::endl;
+        std::cout << "[INFO] Version: " << parsed->version << std::endl;
 
         // Respond to client
         std::string body;
@@ -213,6 +220,9 @@ void handle_client(Socket client_socket) {
             status_line = "HTTP/1.1 404 Not Found";
             body = "[TEST] Ermmm.. unexpected path D:";
         }
+
+        // Log response status code
+        std::cout << "[INFO] Response: " << status_line.substr(9) << std::endl;
 
         std::string response = build_http_response(status_line, content_type, body);
 
@@ -285,10 +295,11 @@ int main() {
 
         while (true) {
             try {
-                Socket client_socket = server.accept_client();
+                sockaddr_in client_addr{};
+                Socket client_socket = server.accept_client(client_addr);
 
                 // Create new thread to handle a socket
-                std::thread client_thread( handle_client, std::move(client_socket) );
+                std::thread client_thread( handle_client, std::move(client_socket), client_addr );
 
                 // Run socket handler thread independently
                 client_thread.detach();
