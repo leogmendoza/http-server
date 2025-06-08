@@ -2,7 +2,7 @@
 
 # Paths to test
 declare -A routes=(
-    ["/"]="root"
+    ["/"]="<h1>"
     ["/about"]="leo"
     ["/doesnotexist"]="404"
 )
@@ -15,7 +15,7 @@ for path in "${!routes[@]}"; do
     # Response headers
     echo "$response" | head -n 1
     echo "$response" | grep -i "Content-Type"
-    echo "$response" | tail -n 1
+    echo "$response"
 
     # Check for expected keyword
     expected=${routes[$path]}

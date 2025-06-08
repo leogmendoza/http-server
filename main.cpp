@@ -134,6 +134,7 @@ void handle_client(Socket client_socket) {
     try {
         std::cout << "Client handler started for socket " << client_socket.get() << std::endl;
 
+        // Receiving
         char buffer[1024];
         int bytes_received;
         std::string request_data;
@@ -185,7 +186,6 @@ void handle_client(Socket client_socket) {
         std::cout << "Version: " << parsed->version << std::endl;
 
         // Respond to client
-        int bytes_sent;
         std::string body;
         std::string status_line = "HTTP/1.1 200 OK";
         std::string content_type = "text/plain";
@@ -216,12 +216,29 @@ void handle_client(Socket client_socket) {
 
         std::string response = build_http_response(status_line, content_type, body);
 
-        // Note: Test using "curl.exe -i http://localhost:8080" to see raw response
-        bytes_sent = send( client_socket.get(), response.c_str(), static_cast<int>( response.size() ), 0 );
+        // Sending
+        // size_t current_bytes = 0;
+        // size_t all_bytes = response.size();
+        // const char* data = response.c_str();
 
-        if (bytes_sent == SOCKET_ERROR) {
-            std::cerr << "recv() failed!" << std::endl;
-        }
+        // // Avoid response content from being cut off
+        // while (current_bytes < all_bytes) {
+        //     // Note: Test using "curl.exe -i http://localhost:8080" to see raw response
+        //     int bytes_sent = send( client_socket.get(), data + current_bytes, static_cast<int>( all_bytes - current_bytes ), 0 );
+
+        //     if (bytes_sent == SOCKET_ERROR) {
+        //         std::cerr << "send() failed!" << std::endl;
+        //         break;
+        //     }
+        //     current_bytes += bytes_sent;
+        // }
+
+        // Note: Test using "curl.exe -i http://localhost:8080" to see raw response
+            int bytes_sent = send( client_socket.get(), response.c_str(), static_cast<int>( response.size() ), 0 );
+
+            if (bytes_sent == SOCKET_ERROR) {
+                std::cerr << "send() failed!" << std::endl;
+            }
 
         std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
     } catch (const std::exception& e) {
