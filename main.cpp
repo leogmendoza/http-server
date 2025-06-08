@@ -6,6 +6,13 @@
 #include <winsock2.h>   // Socket functions and types
 #include <ws2tcpip.h>   // TCP/IP helpers
 
+// ANSI escape codes for coloured logging
+const std::string RESET   = "\033[0m";
+const std::string RED     = "\033[31m";
+const std::string GREEN   = "\033[32m";
+const std::string YELLOW  = "\033[33m";
+const std::string CYAN    = "\033[36m";
+
 struct HttpRequestLine {
     std::string method;
     std::string path;
@@ -122,7 +129,7 @@ class TcpServer {
                 throw std::runtime_error("Accept failed!");
             }
 
-            std::cout << "Client connected!" << std::endl;
+            std::cout << GREEN << "[INFO] Client connected!" << RESET << std::endl;
 
             return client_socket;
         }
@@ -140,7 +147,7 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         char ip_str[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(client_addr.sin_addr), ip_str, INET_ADDRSTRLEN);
 
-        std::cout << "[INFO] Connection from " << ip_str << std::endl;
+        std::cout << GREEN << "[INFO] Connection from " << ip_str << RESET << std::endl;
 
         // Receiving
         char buffer[1024];
@@ -162,12 +169,12 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
 
             } else if (bytes_received == 0) {
                 // Gracefully close connection
-                std::cout << "[INFO] Client disconnected!" << std::endl;
+                std::cout << GREEN << "[INFO] Client disconnected!" << RESET << std::endl;
 
                 break;
             } else {
                 // Note: For some reason, curl does not gracefully disconnect :/
-                std::cerr << "[ERROR] recv() failed!" << std::endl;
+                std::cerr << RED << "[ERROR] recv() failed!" << RESET << std::endl;
 
                 break;
             }
@@ -182,15 +189,15 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         std::optional<HttpRequestLine> parsed = parse_request_line(request_data);
 
         if (!parsed) {
-            std::cerr << "[ERROR] Failed to parse HTTP request line :(" << std::endl;
+            std::cerr << RED << "[ERROR] Failed to parse HTTP request line :(" << RESET << std::endl;
 
             return;
         }
 
         // Log parsed request
-        std::cout << "[INFO] Method: " << parsed->method << std::endl;
-        std::cout << "[INFO] Path: " << parsed->path << std::endl;
-        std::cout << "[INFO] Version: " << parsed->version << std::endl;
+        std::cout << CYAN << "[INFO] Method: " << parsed->method << RESET << std::endl;
+        std::cout << CYAN <<  "[INFO] Path: " << parsed->path << RESET <<  std::endl;
+        std::cout << CYAN <<  "[INFO] Version: " << parsed->version << RESET <<  std::endl;
 
         // Respond to client
         std::string body;
@@ -222,7 +229,7 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         }
 
         // Log response status code
-        std::cout << "[INFO] Response: " << status_line.substr(9) << std::endl;
+        std::cout << YELLOW << "[INFO] Response: " << status_line.substr(9) << RESET << std::endl;
 
         std::string response = build_http_response(status_line, content_type, body);
 
@@ -237,13 +244,13 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
             int bytes_sent = send( client_socket.get(), data + current_bytes, static_cast<int>( all_bytes - current_bytes ), 0 );
 
             if (bytes_sent == SOCKET_ERROR) {
-                std::cerr << "[ERROR] send() failed!" << std::endl;
+                std::cerr << RED << "[ERROR] send() failed!" << RESET << std::endl;
                 break;
             }
             current_bytes += bytes_sent;
         }
 
-        std::cout << "[INFO] Client handler ending for socket " << client_socket.get() << std::endl;
+        std::cout << GREEN << "[INFO] Client handler ending for socket " << client_socket.get() << RESET << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Exception in client handler: " << e.what() << std::endl;
     } catch (...) {
@@ -311,7 +318,7 @@ int main() {
         std::cerr << "Server error: " << e.what() << std::endl;
     }
 
-    std::cout << "Server shut down . . . Xp" << std::endl;
+    std::cout << YELLOW << "Server shut down . . . Xp" << RESET << std::endl;
 
     return 0;
 }
