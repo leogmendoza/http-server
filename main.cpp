@@ -1,6 +1,7 @@
 #include <iostream>
 #include <optional>
-#include <sstream>
+#include <sstream>      // Request parsing
+#include <fstream>      // File reading
 #include <thread>       // Multithreading
 #include <winsock2.h>   // Socket functions and types
 #include <ws2tcpip.h>   // TCP/IP helpers
@@ -191,6 +192,21 @@ void handle_client(Socket client_socket) {
 
         // Path handling -- TO DO: Move out / In general, split up handle_client
         if (parsed->path == "/") {
+            std::ifstream file("public/index.html");
+
+            if (file) {
+                std::ostringstream string_stream;
+
+                // Extract all text from file
+                string_stream << file.rdbuf();
+
+                body = string_stream.str();
+                content_type = "text/html";
+            } else {
+                status_line = "HTTP/1.1 500 Internal Server Error";
+                body = "Aw man, index.html could not be loaded :[";
+            }
+
             body = "[TEST] You're at root!";
         } else if (parsed->path == "/about") {
             body =  "[TEST] This is Leo's HTTP server >B)";
