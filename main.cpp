@@ -192,7 +192,8 @@ void handle_client(Socket client_socket) {
 
         // Path handling -- TO DO: Move out / In general, split up handle_client
         if (parsed->path == "/") {
-            std::ifstream file("public/index.html");
+            // Note: Relative path accounts for building and executing within the `build` folder
+            std::ifstream file("../public/index.html");
 
             if (file) {
                 std::ostringstream string_stream;
@@ -200,14 +201,12 @@ void handle_client(Socket client_socket) {
                 // Extract all text from file
                 string_stream << file.rdbuf();
 
-                body = string_stream.str();
                 content_type = "text/html";
+                body = string_stream.str();
             } else {
                 status_line = "HTTP/1.1 500 Internal Server Error";
                 body = "Aw man, index.html could not be loaded :[";
             }
-
-            body = "[TEST] You're at root!";
         } else if (parsed->path == "/about") {
             body =  "[TEST] This is Leo's HTTP server >B)";
         } else {
