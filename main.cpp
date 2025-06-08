@@ -162,12 +162,12 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
 
             } else if (bytes_received == 0) {
                 // Gracefully close connection
-                std::cout << "Client disconnected!" << std::endl;
+                std::cout << "[INFO] Client disconnected!" << std::endl;
 
                 break;
             } else {
                 // Note: For some reason, curl does not gracefully disconnect :/
-                std::cerr << "recv() failed!" << std::endl;
+                std::cerr << "[ERROR] recv() failed!" << std::endl;
 
                 break;
             }
@@ -182,7 +182,7 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         std::optional<HttpRequestLine> parsed = parse_request_line(request_data);
 
         if (!parsed) {
-            std::cerr << "Failed to parse HTTP request line :(" << std::endl;
+            std::cerr << "[ERROR] Failed to parse HTTP request line :(" << std::endl;
 
             return;
         }
@@ -237,13 +237,13 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
             int bytes_sent = send( client_socket.get(), data + current_bytes, static_cast<int>( all_bytes - current_bytes ), 0 );
 
             if (bytes_sent == SOCKET_ERROR) {
-                std::cerr << "send() failed!" << std::endl;
+                std::cerr << "[ERROR] send() failed!" << std::endl;
                 break;
             }
             current_bytes += bytes_sent;
         }
 
-        std::cout << "Client handler ending for socket " << client_socket.get() << std::endl;
+        std::cout << "[INFO] Client handler ending for socket " << client_socket.get() << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Exception in client handler: " << e.what() << std::endl;
     } catch (...) {
