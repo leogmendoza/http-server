@@ -128,9 +128,7 @@ class TcpServer {
             if ( !client_socket.is_valid() ) {
                 throw std::runtime_error("Accept failed!");
             }
-
-            std::cout << GREEN << "[INFO] Client connected!" << RESET << std::endl;
-
+            
             return client_socket;
         }
 
@@ -142,12 +140,13 @@ class TcpServer {
 void handle_client(Socket client_socket, sockaddr_in client_addr) {
     try {
         // Log socket number and client IP address
-        std::cout << "[INFO] Client handler started for socket " << client_socket.get() << std::endl;
 
         char ip_str[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(client_addr.sin_addr), ip_str, INET_ADDRSTRLEN);
 
-        std::cout << GREEN << "[INFO] Connection from " << ip_str << RESET << std::endl;
+        std::cout << GREEN << "[INFO] Connection from " << ip_str 
+                           << " on socket " << client_socket.get() 
+                           << RESET << std::endl;
 
         // Receiving
         char buffer[1024];
@@ -180,11 +179,6 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
             }
         }
 
-        // For testing
-        std::cout << "====================\n";
-        std::cout << "Full HTTP Request:\n" << request_data << std::endl;
-        std::cout << "====================\n";
-
         // Parse HTTP request line
         std::optional<HttpRequestLine> parsed = parse_request_line(request_data);
 
@@ -193,11 +187,6 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
 
             return;
         }
-
-        // Log parsed request
-        std::cout << CYAN << "[INFO] Method: " << parsed->method << RESET << std::endl;
-        std::cout << CYAN <<  "[INFO] Path: " << parsed->path << RESET <<  std::endl;
-        std::cout << CYAN <<  "[INFO] Version: " << parsed->version << RESET <<  std::endl;
 
         // Respond to client
         std::string body;
@@ -228,8 +217,10 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
             body = "[TEST] Ermmm.. unexpected path D:";
         }
 
-        // Log response status code
-        std::cout << YELLOW << "[INFO] Response: " << status_line.substr(9) << RESET << std::endl;
+        // Log parsed request information and response status
+        std::cout << CYAN << "[INFO] " << parsed->method << " "
+                          << parsed->path << " -> " << status_line.substr(9)
+                          << RESET << std::endl;
 
         std::string response = build_http_response(status_line, content_type, body);
 
