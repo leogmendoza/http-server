@@ -200,6 +200,54 @@ src/http_response.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/http_response.cpp.s
 .PHONY : src/http_response.cpp.s
 
+src/logger.obj: src/logger.cpp.obj
+.PHONY : src/logger.obj
+
+# target to build an object file
+src/logger.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/logger.cpp.obj
+.PHONY : src/logger.cpp.obj
+
+src/logger.i: src/logger.cpp.i
+.PHONY : src/logger.i
+
+# target to preprocess a source file
+src/logger.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/logger.cpp.i
+.PHONY : src/logger.cpp.i
+
+src/logger.s: src/logger.cpp.s
+.PHONY : src/logger.s
+
+# target to generate assembly for a file
+src/logger.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/logger.cpp.s
+.PHONY : src/logger.cpp.s
+
+src/router.obj: src/router.cpp.obj
+.PHONY : src/router.obj
+
+# target to build an object file
+src/router.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/router.cpp.obj
+.PHONY : src/router.cpp.obj
+
+src/router.i: src/router.cpp.i
+.PHONY : src/router.i
+
+# target to preprocess a source file
+src/router.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/router.cpp.i
+.PHONY : src/router.cpp.i
+
+src/router.s: src/router.cpp.s
+.PHONY : src/router.s
+
+# target to generate assembly for a file
+src/router.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/router.cpp.s
+.PHONY : src/router.cpp.s
+
 src/socket.obj: src/socket.cpp.obj
 .PHONY : src/socket.obj
 
@@ -266,6 +314,12 @@ help:
 	@echo ... src/http_response.obj
 	@echo ... src/http_response.i
 	@echo ... src/http_response.s
+	@echo ... src/logger.obj
+	@echo ... src/logger.i
+	@echo ... src/logger.s
+	@echo ... src/router.obj
+	@echo ... src/router.i
+	@echo ... src/router.s
 	@echo ... src/socket.obj
 	@echo ... src/socket.i
 	@echo ... src/socket.s

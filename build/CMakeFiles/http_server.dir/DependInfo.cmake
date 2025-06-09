@@ -11,6 +11,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/Leo/Documents/Projects/http-server/main.cpp" "CMakeFiles/http_server.dir/main.cpp.obj" "gcc" "CMakeFiles/http_server.dir/main.cpp.obj.d"
   "C:/Users/Leo/Documents/Projects/http-server/src/http_request.cpp" "CMakeFiles/http_server.dir/src/http_request.cpp.obj" "gcc" "CMakeFiles/http_server.dir/src/http_request.cpp.obj.d"
   "C:/Users/Leo/Documents/Projects/http-server/src/http_response.cpp" "CMakeFiles/http_server.dir/src/http_response.cpp.obj" "gcc" "CMakeFiles/http_server.dir/src/http_response.cpp.obj.d"
+  "C:/Users/Leo/Documents/Projects/http-server/src/logger.cpp" "CMakeFiles/http_server.dir/src/logger.cpp.obj" "gcc" "CMakeFiles/http_server.dir/src/logger.cpp.obj.d"
+  "C:/Users/Leo/Documents/Projects/http-server/src/router.cpp" "CMakeFiles/http_server.dir/src/router.cpp.obj" "gcc" "CMakeFiles/http_server.dir/src/router.cpp.obj.d"
   "C:/Users/Leo/Documents/Projects/http-server/src/socket.cpp" "CMakeFiles/http_server.dir/src/socket.cpp.obj" "gcc" "CMakeFiles/http_server.dir/src/socket.cpp.obj.d"
   "C:/Users/Leo/Documents/Projects/http-server/src/tcp_server.cpp" "CMakeFiles/http_server.dir/src/tcp_server.cpp.obj" "gcc" "CMakeFiles/http_server.dir/src/tcp_server.cpp.obj.d"
   )

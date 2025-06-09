@@ -8,6 +8,7 @@
 #include "tcp_server.hpp"
 #include "http_request.hpp"
 #include "http_response.hpp"
+#include "router.hpp"
 
 // ANSI escape codes for coloured logging
 const std::string RESET   = "\033[0m";
@@ -68,40 +69,14 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         }
 
         // Respond to client
-        std::string body;
-        std::string status_line = "HTTP/1.1 200 OK";
-        std::string content_type = "text/plain";
-
-        // Path handling -- TO DO: Move out / In general, split up handle_client
-        if (parsed->path == "/") {
-            // Note: Relative path accounts for building and executing within the `build` folder
-            std::ifstream file("../public/index.html");
-
-            if (file) {
-                std::ostringstream string_stream;
-
-                // Extract all text from file
-                string_stream << file.rdbuf();
-
-                content_type = "text/html";
-                body = string_stream.str();
-            } else {
-                status_line = "HTTP/1.1 500 Internal Server Error";
-                body = "Aw man, index.html could not be loaded :[";
-            }
-        } else if (parsed->path == "/about") {
-            body =  "[TEST] This is Leo's HTTP server >B)";
-        } else {
-            status_line = "HTTP/1.1 404 Not Found";
-            body = "[TEST] Ermmm.. unexpected path D:";
-        }
+        RouteResult route = Router::route(*parsed);
 
         // Log parsed request information and response status
         std::cout << CYAN << "[INFO] " << parsed->method << " "
-                          << parsed->path << " -> " << status_line.substr(9)
+                          << parsed->path << " -> " << route.status_line.substr(9)
                           << RESET << std::endl;
 
-        std::string response = HttpResponse::build(status_line, content_type, body);
+        std::string response = HttpResponse::build(route.status_line, route.content_type, route.body);
 
         // Sending
         size_t current_bytes = 0;
