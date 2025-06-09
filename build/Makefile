@@ -176,6 +176,30 @@ src/http_request.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/http_request.cpp.s
 .PHONY : src/http_request.cpp.s
 
+src/http_response.obj: src/http_response.cpp.obj
+.PHONY : src/http_response.obj
+
+# target to build an object file
+src/http_response.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/http_response.cpp.obj
+.PHONY : src/http_response.cpp.obj
+
+src/http_response.i: src/http_response.cpp.i
+.PHONY : src/http_response.i
+
+# target to preprocess a source file
+src/http_response.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/http_response.cpp.i
+.PHONY : src/http_response.cpp.i
+
+src/http_response.s: src/http_response.cpp.s
+.PHONY : src/http_response.s
+
+# target to generate assembly for a file
+src/http_response.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/http_response.cpp.s
+.PHONY : src/http_response.cpp.s
+
 src/socket.obj: src/socket.cpp.obj
 .PHONY : src/socket.obj
 
@@ -239,6 +263,9 @@ help:
 	@echo ... src/http_request.obj
 	@echo ... src/http_request.i
 	@echo ... src/http_request.s
+	@echo ... src/http_response.obj
+	@echo ... src/http_response.i
+	@echo ... src/http_response.s
 	@echo ... src/socket.obj
 	@echo ... src/socket.i
 	@echo ... src/socket.s

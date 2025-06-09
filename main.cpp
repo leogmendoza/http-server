@@ -7,6 +7,7 @@
 #include <ws2tcpip.h>   // TCP/IP helpers
 #include "tcp_server.hpp"
 #include "http_request.hpp"
+#include "http_response.hpp"
 
 // ANSI escape codes for coloured logging
 const std::string RESET   = "\033[0m";
@@ -14,8 +15,6 @@ const std::string RED     = "\033[31m";
 const std::string GREEN   = "\033[32m";
 const std::string YELLOW  = "\033[33m";
 const std::string CYAN    = "\033[36m";
-
-std::string build_http_response(const std::string& status_line, const std::string& content_type, const std::string& body);
 
 void handle_client(Socket client_socket, sockaddr_in client_addr) {
     try {
@@ -102,7 +101,7 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
                           << parsed->path << " -> " << status_line.substr(9)
                           << RESET << std::endl;
 
-        std::string response = build_http_response(status_line, content_type, body);
+        std::string response = HttpResponse::build(status_line, content_type, body);
 
         // Sending
         size_t current_bytes = 0;
@@ -127,19 +126,6 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
     } catch (...) {
         std::cerr << "Unknown exception in client handler . . ." << std::endl;
     }
-}
-
-std::string build_http_response(const std::string& status_line, const std::string& content_type, const std::string& body) {
-    std::ostringstream response_stream;
-
-    // Prepare status line, a couple headers, and the text body
-    response_stream << status_line << "\r\n"
-                    << "Content-Type: " << content_type << "\r\n"
-                    << "Content-Length: " << body.length() << "\r\n"
-                    << "\r\n"
-                    << body;
-
-    return response_stream.str();
 }
 
 int main() {
