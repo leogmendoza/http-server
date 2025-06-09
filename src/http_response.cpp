@@ -11,7 +11,8 @@ std::string HttpResponse::build(const std::string& status_line,
                     << "Content-Type: " << content_type << "\r\n"
                     << "Content-Length: " << body.length() << "\r\n"
                     << "\r\n"
-                    << body;
+                    << body << "\r\n"
+                    << "";
 
     return response_stream.str();
 }

@@ -406,4 +406,5 @@ CMakeFiles/http_server.dir/main.cpp.obj: \
  C:/Users/Leo/Documents/Projects/http-server/inc/socket.hpp \
  C:/Users/Leo/Documents/Projects/http-server/inc/http_request.hpp \
  C:/Users/Leo/Documents/Projects/http-server/inc/http_response.hpp \
- C:/Users/Leo/Documents/Projects/http-server/inc/router.hpp
+ C:/Users/Leo/Documents/Projects/http-server/inc/router.hpp \
+ C:/Users/Leo/Documents/Projects/http-server/inc/logger.hpp

@@ -68,11 +68,10 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         // Log parsed request information and response status
         std::ostringstream log_parsed;
         log_parsed << parsed->method << " " 
-                    << parsed->path << " -> " 
-                    << route.status_line.substr(9);
+                   << parsed->path << " -> " 
+                   << route.status_line.substr(9);
 
         Logger::status(log_parsed.str());
-
 
         std::string response = HttpResponse::build(route.status_line, route.content_type, route.body);
 
