@@ -19,6 +19,8 @@ RouteResult Router::route(const HttpRequest& request) {
         file_path = "../public/heres_the_thing.html";
     } else if (request.path == "/forbidden") {
         file_path = "../public/forbidden.html";
+    }
+    
     } else {
         result.status_line = "HTTP/1.1 404 Not Found";
         result.content_type = "text/plain";
