@@ -1,52 +1,46 @@
 #include "socket.hpp"
 
-class Socket {
-    public:
-        // Uninitialized socket handle
-        Socket::Socket(): handle_(INVALID_SOCKET) { }
+// Uninitialized socket handle
+Socket::Socket(): handle_(INVALID_SOCKET) { }
 
-        // Assign socket parameter to handle
-        Socket::Socket(SOCKET s): handle_(s) { }
+// Assign socket parameter to handle
+Socket::Socket(SOCKET s): handle_(s) { }
 
-        Socket::~Socket() {
-            // Clean up valid sockets
-            if (handle_ != INVALID_SOCKET) {
-                closesocket(handle_);
-            }
+Socket::~Socket() {
+    // Clean up valid sockets
+    if (handle_ != INVALID_SOCKET) {
+        closesocket(handle_);
+    }
+}
+
+// Prevent duplicate socket handles | TODO: Comment out since in header
+// Socket(const Socket&) = delete;
+// Socket& operator=(const Socket&) = delete;
+
+// Initialize by stealing handle from another socket
+Socket::Socket(Socket&& other) noexcept {
+    handle_ = other.handle_;
+    other.handle_ = INVALID_SOCKET;
+}
+
+// Transfer ownership from another socket
+Socket& Socket::operator=(Socket&& other) noexcept {
+    if (this != &other) {
+        if (handle_ != INVALID_SOCKET) {
+            closesocket(handle_);
         }
+    }
+    
+    handle_ = other.handle_;
+    other.handle_ = INVALID_SOCKET;
 
-        // Prevent duplicate socket handles | TODO: Comment out since in header
-        // Socket(const Socket&) = delete;
-        // Socket& operator=(const Socket&) = delete;
+    return *this;
+}
 
-        // Initialize by stealing handle from another socket
-        Socket::Socket(Socket&& other) noexcept {
-            handle_ = other.handle_;
-            other.handle_ = INVALID_SOCKET;
-        }
+SOCKET Socket::get() const {
+    return handle_;
+}
 
-        // Transfer ownership from another socket
-        Socket& Socket::operator=(Socket&& other) noexcept {
-            if (this != &other) {
-                if (handle_ != INVALID_SOCKET) {
-                    closesocket(handle_);
-                }
-            }
-            
-            handle_ = other.handle_;
-            other.handle_ = INVALID_SOCKET;
-
-            return *this;
-        }
-
-        SOCKET Socket::get() const {
-            return handle_;
-        }
-
-        bool Socket::is_valid() const {
-            return (handle_ != INVALID_SOCKET);
-        }
-
-    private:
-        SOCKET handle_;
-};
+bool Socket::is_valid() const {
+    return (handle_ != INVALID_SOCKET);
+}
