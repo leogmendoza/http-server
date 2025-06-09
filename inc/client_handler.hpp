@@ -6,11 +6,11 @@
 #include "http_request.hpp"
 
 class ClientHandler {
-public:
-    ClientHandler(Socket socket, sockaddr_in client_addr);
-    void run();
+    public:
+        ClientHandler(Socket socket, sockaddr_in client_addr);
+        void run();
 
-private:
-    Socket client_socket_;
-    sockaddr_in client_addr_;
+    private:
+        Socket client_socket_;
+        sockaddr_in client_addr_;
 };
