@@ -152,6 +152,78 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+src/http_request.obj: src/http_request.cpp.obj
+.PHONY : src/http_request.obj
+
+# target to build an object file
+src/http_request.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/http_request.cpp.obj
+.PHONY : src/http_request.cpp.obj
+
+src/http_request.i: src/http_request.cpp.i
+.PHONY : src/http_request.i
+
+# target to preprocess a source file
+src/http_request.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/http_request.cpp.i
+.PHONY : src/http_request.cpp.i
+
+src/http_request.s: src/http_request.cpp.s
+.PHONY : src/http_request.s
+
+# target to generate assembly for a file
+src/http_request.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/http_request.cpp.s
+.PHONY : src/http_request.cpp.s
+
+src/socket.obj: src/socket.cpp.obj
+.PHONY : src/socket.obj
+
+# target to build an object file
+src/socket.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/socket.cpp.obj
+.PHONY : src/socket.cpp.obj
+
+src/socket.i: src/socket.cpp.i
+.PHONY : src/socket.i
+
+# target to preprocess a source file
+src/socket.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/socket.cpp.i
+.PHONY : src/socket.cpp.i
+
+src/socket.s: src/socket.cpp.s
+.PHONY : src/socket.s
+
+# target to generate assembly for a file
+src/socket.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/socket.cpp.s
+.PHONY : src/socket.cpp.s
+
+src/tcp_server.obj: src/tcp_server.cpp.obj
+.PHONY : src/tcp_server.obj
+
+# target to build an object file
+src/tcp_server.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/tcp_server.cpp.obj
+.PHONY : src/tcp_server.cpp.obj
+
+src/tcp_server.i: src/tcp_server.cpp.i
+.PHONY : src/tcp_server.i
+
+# target to preprocess a source file
+src/tcp_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/tcp_server.cpp.i
+.PHONY : src/tcp_server.cpp.i
+
+src/tcp_server.s: src/tcp_server.cpp.s
+.PHONY : src/tcp_server.s
+
+# target to generate assembly for a file
+src/tcp_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\http_server.dir\build.make CMakeFiles/http_server.dir/src/tcp_server.cpp.s
+.PHONY : src/tcp_server.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -164,6 +236,15 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... src/http_request.obj
+	@echo ... src/http_request.i
+	@echo ... src/http_request.s
+	@echo ... src/socket.obj
+	@echo ... src/socket.i
+	@echo ... src/socket.s
+	@echo ... src/tcp_server.obj
+	@echo ... src/tcp_server.i
+	@echo ... src/tcp_server.s
 .PHONY : help
 
 

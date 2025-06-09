@@ -5,6 +5,8 @@
 #include <thread>       // Multithreading
 #include <winsock2.h>   // Socket functions and types
 #include <ws2tcpip.h>   // TCP/IP helpers
+#include "tcp_server.hpp"
+#include "http_request.hpp"
 
 // ANSI escape codes for coloured logging
 const std::string RESET   = "\033[0m";
@@ -13,129 +15,7 @@ const std::string GREEN   = "\033[32m";
 const std::string YELLOW  = "\033[33m";
 const std::string CYAN    = "\033[36m";
 
-struct HttpRequestLine {
-    std::string method;
-    std::string path;
-    std::string version;
-};
-
-std::optional<HttpRequestLine> parse_request_line(const std::string& request_data);
 std::string build_http_response(const std::string& status_line, const std::string& content_type, const std::string& body);
-
-class Socket {
-    public:
-        // Uninitialized socket handle
-        Socket(): handle_(INVALID_SOCKET) { }
-
-        // Assign socket parameter to handle
-        Socket(SOCKET s): handle_(s) { }
-
-        ~Socket() {
-            // Clean up valid sockets
-            if (handle_ != INVALID_SOCKET) {
-                closesocket(handle_);
-            }
-        }
-
-        // Prevent duplicate socket handles
-        Socket(const Socket&) = delete;
-        Socket& operator=(const Socket&) = delete;
-
-        // Initialize by stealing handle from another socket
-        Socket(Socket&& other) noexcept {
-            handle_ = other.handle_;
-            other.handle_ = INVALID_SOCKET;
-        }
-
-        // Transfer ownership from another socket
-        Socket& operator=(Socket&& other) noexcept {
-            if (this != &other) {
-                if (handle_ != INVALID_SOCKET) {
-                    closesocket(handle_);
-                }
-            }
-            
-            handle_ = other.handle_;
-            other.handle_ = INVALID_SOCKET;
-
-            return *this;
-        }
-
-        SOCKET get() const {
-            return handle_;
-        }
-
-        bool is_valid() const {
-            return (handle_ != INVALID_SOCKET);
-        }
-
-    private:
-        SOCKET handle_;
-};
-
-class TcpServer {
-    public:
-        TcpServer() {
-            // Initialize Winsock 2.2 (Windows Sockets API)
-            if ( WSAStartup( MAKEWORD(2, 2), &wsa_data_ ) != 0 ) {
-                throw std::runtime_error("WSAStartup failed!");
-            }
-
-            // Create listening socket
-            server_socket_ = Socket(socket(
-                AF_INET,        // IPv4 address family
-                SOCK_STREAM,    // TCP socket type
-                IPPROTO_TCP     // TCP protocol
-            ));
-
-            if ( !server_socket_.is_valid() ) {
-                throw std::runtime_error("Listening socket creation failed!");
-            }
-
-            // Prepare address of listening socket
-            sockaddr_in server_addr{};
-            server_addr.sin_family = AF_INET;
-            server_addr.sin_port = htons(8080);     // Ensure big-endianness
-            server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-
-            // Bind listening socket to the prepared address
-            if ( bind( server_socket_.get(), reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr) ) == SOCKET_ERROR ) {
-                throw std::runtime_error("Bind failed!");
-            }
-
-            // Begin listening to incoming connections
-            if ( listen( server_socket_.get(), SOMAXCONN ) == SOCKET_ERROR ) {
-                throw std::runtime_error("Listen failed!");
-            }
-        }
-
-        ~TcpServer() {
-            // Clean up connections
-            WSACleanup();
-        }
-
-        Socket accept_client(sockaddr_in& client_addr_output) {
-            int addr_len = sizeof(client_addr_output);
-
-            // Create socket for a client connection
-            Socket client_socket(accept(
-                server_socket_.get(),                               // Listening socket
-                reinterpret_cast<sockaddr*>(&client_addr_output),   // Client address
-                &addr_len                                           // Length of client address
-            ));
-
-            // Handle client connection error
-            if ( !client_socket.is_valid() ) {
-                throw std::runtime_error("Accept failed!");
-            }
-            
-            return client_socket;
-        }
-
-    private:
-        WSADATA wsa_data_;
-        Socket server_socket_;
-};
 
 void handle_client(Socket client_socket, sockaddr_in client_addr) {
     try {
@@ -180,7 +60,7 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         }
 
         // Parse HTTP request line
-        std::optional<HttpRequestLine> parsed = parse_request_line(request_data);
+        std::optional<HttpRequest> parsed = HttpRequest::parse(request_data);
 
         if (!parsed) {
             std::cerr << RED << "[ERROR] Failed to parse HTTP request line :(" << RESET << std::endl;
@@ -247,31 +127,6 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
     } catch (...) {
         std::cerr << "Unknown exception in client handler . . ." << std::endl;
     }
-}
-
-std::optional<HttpRequestLine> parse_request_line(const std::string& request_data) {
-    // Read the request line
-    std::istringstream request_stream(request_data);
-    std::string request_line;
-    
-    if ( !std::getline(request_stream, request_line) ) {
-        return std::nullopt;
-    }
-
-    // Strip trailing carriage return
-    if ( !request_line.empty() && request_line.back() == '\r' ) {
-        request_line.pop_back();
-    }
-    
-    // Split request line into tokens
-    std::istringstream line_stream(request_line);
-    std::string method, path, version;
-
-    if ( !(((line_stream >> method) >> path) >> version) ) {
-        return std::nullopt;
-    }
-
-    return HttpRequestLine{ method, path, version };
 }
 
 std::string build_http_response(const std::string& status_line, const std::string& content_type, const std::string& body) {
