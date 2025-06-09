@@ -9,26 +9,20 @@
 #include "http_request.hpp"
 #include "http_response.hpp"
 #include "router.hpp"
-
-// ANSI escape codes for coloured logging
-const std::string RESET   = "\033[0m";
-const std::string RED     = "\033[31m";
-const std::string GREEN   = "\033[32m";
-const std::string YELLOW  = "\033[33m";
-const std::string CYAN    = "\033[36m";
+#include "logger.hpp"
 
 void handle_client(Socket client_socket, sockaddr_in client_addr) {
     try {
-        // Log socket number and client IP address
-
+        // Grab socket number and client IP address
         char ip_str[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(client_addr.sin_addr), ip_str, INET_ADDRSTRLEN);
 
-        std::cout << GREEN << "[INFO] Connection from " << ip_str 
-                           << " on socket " << client_socket.get() 
-                           << RESET << std::endl;
+        // Client connection
+        Logger::info( std::string("Connection from ") 
+                    + ip_str + " on socket " 
+                    + std::to_string(client_socket.get()) );
 
-        // Receiving
+        // Receiving data
         char buffer[1024];
         int bytes_received;
         std::string request_data;
@@ -47,13 +41,13 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
                 }
 
             } else if (bytes_received == 0) {
-                // Gracefully close connection
-                std::cout << GREEN << "[INFO] Client disconnected!" << RESET << std::endl;
+                // Graceful client disconnection
+                Logger::info("Client disconnected!");
 
                 break;
             } else {
                 // Note: For some reason, curl does not gracefully disconnect :/
-                std::cerr << RED << "[ERROR] recv() failed!" << RESET << std::endl;
+                Logger::error("recv() failed!");
 
                 break;
             }
@@ -63,7 +57,7 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         std::optional<HttpRequest> parsed = HttpRequest::parse(request_data);
 
         if (!parsed) {
-            std::cerr << RED << "[ERROR] Failed to parse HTTP request line :(" << RESET << std::endl;
+            Logger::error("Failed to parse HTTP request line :(");
 
             return;
         }
@@ -72,13 +66,17 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
         RouteResult route = Router::route(*parsed);
 
         // Log parsed request information and response status
-        std::cout << CYAN << "[INFO] " << parsed->method << " "
-                          << parsed->path << " -> " << route.status_line.substr(9)
-                          << RESET << std::endl;
+        std::ostringstream log_parsed;
+        log_parsed << parsed->method << " " 
+                    << parsed->path << " -> " 
+                    << route.status_line.substr(9);
+
+        Logger::status(log_parsed.str());
+
 
         std::string response = HttpResponse::build(route.status_line, route.content_type, route.body);
 
-        // Sending
+        // Sending data
         size_t current_bytes = 0;
         size_t all_bytes = response.size();
         const char* data = response.c_str();
@@ -89,17 +87,18 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
             int bytes_sent = send( client_socket.get(), data + current_bytes, static_cast<int>( all_bytes - current_bytes ), 0 );
 
             if (bytes_sent == SOCKET_ERROR) {
-                std::cerr << RED << "[ERROR] send() failed!" << RESET << std::endl;
+                Logger::error("send() failed!");
+
                 break;
             }
             current_bytes += bytes_sent;
         }
 
-        std::cout << GREEN << "[INFO] Client handler ending for socket " << client_socket.get() << RESET << std::endl;
+        Logger::info( "Client handler ending for socket " + std::to_string(client_socket.get()) );
     } catch (const std::exception& e) {
-        std::cerr << "Exception in client handler: " << e.what() << std::endl;
+        Logger::error( std::string("Exception in client handler: ") + e.what() );
     } catch (...) {
-        std::cerr << "Unknown exception in client handler . . ." << std::endl;
+        Logger::error( "Unknown exception in client handler O_o" );
     }
 }
 
@@ -118,14 +117,13 @@ int main() {
                 // Run socket handler thread independently
                 client_thread.detach();
             } catch (const std::exception &e) {
-                std::cerr << "Client error: " << e.what() << std::endl;
+                Logger::error(std::string("Client error: ") + e.what());
             }
         }
     } catch (const std::exception &e) {
-        std::cerr << "Server error: " << e.what() << std::endl;
+        Logger::error(std::string("Server error: ") + e.what());
     }
-
-    std::cout << YELLOW << "Server shut down . . . Xp" << RESET << std::endl;
+    Logger::warn("Server shutting down . . . Xp");
 
     return 0;
 }
