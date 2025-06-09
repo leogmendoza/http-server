@@ -1,6 +1,8 @@
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 #include "router.hpp"
+#include "http_response.hpp"
 
 RouteResult Router::route(const HttpRequest& request) {
     RouteResult result;
@@ -19,8 +21,30 @@ RouteResult Router::route(const HttpRequest& request) {
         file_path = "../public/heres_the_thing.html";
     } else if (request.path == "/forbidden") {
         file_path = "../public/forbidden.html";
-    }
-    
+    } else if ( request.path.rfind("/images/", 0) == 0 ) {
+        // Dynamically serve from public/images
+        file_path = "../public" + request.path;
+
+        // Check for the requested image
+        if ( !std::filesystem::exists(file_path) ) {
+            result.status_line = "HTTP/1.1 404 Not Found";
+            result.content_type = "text/plain";
+            result.body = "404 - Image not found";
+
+            return result;    
+        }
+
+        // Read from png in binary mode to avoid corruption
+        std::ifstream file(file_path, std::ios::binary);
+
+        std::ostringstream buffer;
+        buffer << file.rdbuf();
+
+        result.status_line = "HTTP/1.1 200 OK";
+        result.content_type = "image/png";
+        result.body = buffer.str();
+
+        return result;
     } else {
         result.status_line = "HTTP/1.1 404 Not Found";
         result.content_type = "text/plain";
@@ -32,14 +56,14 @@ RouteResult Router::route(const HttpRequest& request) {
     std::ifstream file(file_path);
 
     if (file) {
-        std::ostringstream string_stream;
+        std::ostringstream buffer;
 
         // Extract all text from file
-        string_stream << file.rdbuf();
+        buffer << file.rdbuf();
 
         result.status_line = "HTTP/1.1 200 OK";
         result.content_type = "text/html";
-        result.body = string_stream.str();
+        result.body = buffer.str();
     } else {
         result.status_line = "HTTP/1.1 500 Internal Server Error";
         result.content_type = "text/plain";

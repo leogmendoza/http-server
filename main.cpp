@@ -73,7 +73,14 @@ void handle_client(Socket client_socket, sockaddr_in client_addr) {
 
         Logger::status(log_parsed.str());
 
-        std::string response = HttpResponse::build(route.status_line, route.content_type, route.body);
+        std::string response;
+        
+        // Build response depending on file being served
+        if (route.content_type.rfind("image/", 0) == 0) {
+            response = HttpResponse::build_binary(route.status_line, route.content_type, route.body);
+        } else {
+            response = HttpResponse::build(route.status_line, route.content_type, route.body);
+        }
 
         // Sending data
         size_t current_bytes = 0;
