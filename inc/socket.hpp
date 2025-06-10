@@ -1,6 +1,6 @@
 #pragma once
 
-#include <winsock2.h>   // Socket functions and types
+#include <winsock2.h>
 
 class Socket {
     public:

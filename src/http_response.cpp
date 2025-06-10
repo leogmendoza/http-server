@@ -1,5 +1,6 @@
 #include "http_response.hpp"
-#include <sstream>
+
+#include <sstream>      // Response building
 
 std::string HttpResponse::build(const std::string& status_line, 
                                 const std::string& content_type, 

@@ -1,5 +1,6 @@
-#include <stdexcept>
 #include "tcp_server.hpp"
+
+#include <stdexcept>
 
 TcpServer::TcpServer() {
     // Initialize Winsock 2.2 (Windows Sockets API)

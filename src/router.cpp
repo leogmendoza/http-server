@@ -1,7 +1,9 @@
-#include <fstream>
-#include <sstream>
-#include <filesystem>
 #include "router.hpp"
+
+#include <sstream>          // Response building
+#include <fstream>          // File reading
+#include <filesystem>       // File checking
+
 #include "http_response.hpp"
 
 RouteResult Router::route(const HttpRequest& request) {

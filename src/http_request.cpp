@@ -1,5 +1,6 @@
 #include "http_request.hpp"
-#include <sstream>
+
+#include <sstream>      // Request parsing
 
 std::optional<HttpRequest> HttpRequest::parse(const std::string& request_data) {
     // Read the request line

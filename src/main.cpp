@@ -1,16 +1,19 @@
 #include <iostream>
-#include <optional>
-#include <sstream>      // Request parsing
-#include <fstream>      // File reading
 #include <thread>       // Multithreading
-#include <winsock2.h>   // Socket functions and types
-#include <ws2tcpip.h>   // TCP/IP helpers
+
+#include <winsock2.h>       // Socket functions and types
+#include <ws2tcpip.h>       // TCP/IP helpers
+
 #include "tcp_server.hpp"
+#include "client_handler.hpp"
 #include "http_request.hpp"
 #include "http_response.hpp"
 #include "router.hpp"
 #include "logger.hpp"
-#include "client_handler.hpp"
+
+#include <sstream>      // Request parsing
+#include <fstream>      // File reading
+
 
 int main() {
     try {
