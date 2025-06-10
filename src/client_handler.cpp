@@ -28,7 +28,7 @@ void ClientHandler::run() {
                     --active_clients;
                     /* Critical section ends */
 
-                    Logger::info( "Active clients: " + std::to_string(active_clients) );
+                    Logger::info( "Client disconnected. Active clients: " + std::to_string(active_clients) );
                 }
         } guard;
 

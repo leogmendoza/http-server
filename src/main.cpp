@@ -37,8 +37,8 @@ int main() {
                             /* Critical section begins */
                             ++active_clients;
                             /* Critical section ends */
-                            
-                            Logger::info( "Active clients: " + std::to_string(active_clients) );
+
+                            Logger::info( "Client connected. Active clients: " + std::to_string(active_clients) );
                         }
                         handler.run();
                     }, 
