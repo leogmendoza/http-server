@@ -10,7 +10,6 @@ file(GLOB SRC_FILES src/*.cpp)
 
 add_executable(
     ${PROJECT_NAME} 
-    main.cpp
     ${SRC_FILES}
 )
 

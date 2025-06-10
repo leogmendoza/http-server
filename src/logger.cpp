@@ -1,6 +1,7 @@
 #include "logger.hpp"
 
 #include <iostream>
+#include <ctime>
 
 namespace {
     // ANSI escape codes for coloured logging
@@ -12,19 +13,29 @@ namespace {
 }
 
 namespace Logger {
+    std::string time_stamp() {
+        std::time_t current_time = std::time(nullptr);
+        std::tm* local_time = std::localtime(&current_time);
+
+        char buffer[10];
+        std::strftime(buffer, sizeof(buffer), "%H:%M:%S", local_time);
+
+        return std::string("[") + buffer + "]";
+    }
+
     void info(const std::string& message) {
-        std::cout << GREEN << "[INFO] " << message << RESET << std::endl;
+        std::cout << GREEN << time_stamp() << " [INFO] " << message << RESET << std::endl;
     }
 
     void status(const std::string& message) {
-        std::cout << CYAN << "[STATUS] " << message << RESET << std::endl;
+        std::cout << CYAN << time_stamp() << " [STATUS] " << message << RESET << std::endl;
     }
 
     void error(const std::string& message) {
-        std::cerr << RED << "[ERROR] " << message << RESET << std::endl;
+        std::cerr << RED << time_stamp() << " [ERROR] " << message << RESET << std::endl;
     }
 
     void warn(const std::string& message) {
-        std::cerr << YELLOW << "[WARN] " << message << RESET << std::endl;
+        std::cerr << YELLOW << time_stamp() << " [WARN] " << message << RESET << std::endl;
     }
 }
