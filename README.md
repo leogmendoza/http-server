@@ -29,11 +29,11 @@ During my co-op at Xandar Kardian, I gained a bit of experience in backend devel
    ./http_server
 7. In your browser, visit: [http://localhost:8080/](http://localhost:8080/)
 
-# Demos/Screenshots
+## Demos/Screenshots
 ⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
 
-# Learnings
+## Learnings
 ⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
 
-# Potential Features
+## Potential Features
 lol just implementing the GET method was one too many T_T
