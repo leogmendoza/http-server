@@ -1,33 +1,33 @@
-# Why? 🗿
+# Custom Multithreaded HTTP Server in C++
+
+## Why? 🗿
 During my co-op at Xandar Kardian, I gained a bit of experience in backend development... but I always wondered how server calls worked at a lower level. So why _not_ create a web server that handles HTTP requests myself?
 
-# Run It! 🙏
+## Run It! 🙏
 
-## Pre-reqs
+### Pre-reqs
 - Windows (sorry Linux/Mac users 🥀)
 - CMake
 
-## Build Instructions
-1. Clone my repo
+### Setup Instructions
+1. Clone my repo:
    ```bash
    git clone https://github.com/leogmen/http-server.git
    cd http-server
-2. Create build directory
+2. Create build directory:
    ```bash
    mkdir build
    cd build
-3. Configure project with CMake
+3. Configure project with CMake:
    ```bash
    cmake ..
-5. Build executable
+5. Build executable:
    ```bash
    cmake --build .
-6. Run the server!
+6. Run the server!:
    ```bash
    ./http_server
-
-# Hmmm.. now what to do???
-⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
+7. In your browser, visit: [http://localhost:8080/](http://localhost:8080/)
 
 # Demos/Screenshots
 ⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
