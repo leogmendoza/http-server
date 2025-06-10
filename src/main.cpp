@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>       // Multithreading
+#include <mutex>        // Prevent race conditions
 
 #include <winsock2.h>       // Socket functions and types
 #include <ws2tcpip.h>       // TCP/IP helpers
@@ -10,6 +11,10 @@
 #include "http_response.hpp"
 #include "router.hpp"
 #include "logger.hpp"
+
+// Global client counter
+extern int active_clients = 0;
+extern std::mutex client_count_mutex;
 
 int main() {
     try {
@@ -25,6 +30,14 @@ int main() {
                     // Lambda function to execute in thread
                     []( Socket socket, sockaddr_in addr ) {
                         ClientHandler handler(std::move(socket), addr);
+
+                        // Increment client counter
+                        std::lock_guard<std::mutex> lock(client_count_mutex);
+                        /* Critical section begins */
+                        ++active_clients;
+                        Logger::info( "Active clients: " + std::to_string(active_clients) );
+                        /* Critical section ends */
+
                         handler.run();
                     }, 
                     // Lambda args

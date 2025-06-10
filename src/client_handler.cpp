@@ -3,6 +3,7 @@
 #include <string>
 #include <optional>
 #include <sstream>      // Request parsing
+#include <mutex>        // Prevent race conditions
 
 #include <winsock2.h>       // Socket functions and types
 #include <ws2tcpip.h>       // TCP/IP helpers
@@ -10,6 +11,9 @@
 #include "http_response.hpp"
 #include "router.hpp"
 #include "logger.hpp"
+
+extern int active_clients;
+extern std::mutex client_count_mutex;
 
 ClientHandler::ClientHandler(Socket socket, sockaddr_in client_addr): 
     client_socket_(std::move(socket)), client_addr_(client_addr) {}
@@ -107,4 +111,10 @@ void ClientHandler::run() {
     } catch (...) {
         Logger::error( "Unknown exception in client handler O_o" );
     }
+    // Decrement client counter
+    std::lock_guard<std::mutex> lock(client_count_mutex);
+    /* Critical section begins */
+    --active_clients;
+    Logger::info( "Active clients: " + std::to_string(active_clients) );
+    /* Critical section ends */
 }
