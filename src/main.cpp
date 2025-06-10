@@ -11,10 +11,6 @@
 #include "router.hpp"
 #include "logger.hpp"
 
-#include <sstream>      // Request parsing
-#include <fstream>      // File reading
-
-
 int main() {
     try {
         TcpServer server;
@@ -33,7 +29,8 @@ int main() {
                     }, 
                     // Lambda args
                     std::move(client_socket), 
-                    client_addr );
+                    client_addr 
+                );
 
                 // Run socket handler thread independently
                 client_thread.detach();

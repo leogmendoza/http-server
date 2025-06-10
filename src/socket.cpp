@@ -13,10 +13,6 @@ Socket::~Socket() {
     }
 }
 
-// Prevent duplicate socket handles | TODO: Comment out since in header
-// Socket(const Socket&) = delete;
-// Socket& operator=(const Socket&) = delete;
-
 // Initialize by stealing handle from another socket
 Socket::Socket(Socket&& other) noexcept {
     handle_ = other.handle_;
@@ -30,7 +26,6 @@ Socket& Socket::operator=(Socket&& other) noexcept {
             closesocket(handle_);
         }
     }
-    
     handle_ = other.handle_;
     other.handle_ = INVALID_SOCKET;
 

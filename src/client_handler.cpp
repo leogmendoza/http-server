@@ -42,7 +42,6 @@ void ClientHandler::run() {
                 if ( request_data.find("\r\n\r\n") != std::string::npos ) {
                     break;
                 }
-
             } else if (bytes_received == 0) {
                 // Graceful client disconnection
                 Logger::info("Client disconnected!");
@@ -102,7 +101,6 @@ void ClientHandler::run() {
             }
             current_bytes += bytes_sent;
         }
-
         Logger::info( "Client handler ending for socket " + std::to_string(client_socket_.get()) );
     } catch (const std::exception& e) {
         Logger::error( std::string("Exception in client handler: ") + e.what() );
