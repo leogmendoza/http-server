@@ -12,9 +12,9 @@
 #include "router.hpp"
 #include "logger.hpp"
 
-// Global client counter
-extern int active_clients = 0;
-extern std::mutex client_count_mutex;
+// Client counter
+int active_clients = 0;
+std::mutex client_count_mutex;
 
 int main() {
     try {

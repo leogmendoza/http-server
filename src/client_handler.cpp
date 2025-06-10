@@ -106,15 +106,16 @@ void ClientHandler::run() {
             current_bytes += bytes_sent;
         }
         Logger::info( "Client handler ending for socket " + std::to_string(client_socket_.get()) );
+
+        // Decrement client counter
+        std::lock_guard<std::mutex> lock(client_count_mutex);
+        /* Critical section begins */
+        --active_clients;
+        Logger::info( "Active clients: " + std::to_string(active_clients) );
+    /* Critical section ends */
     } catch (const std::exception& e) {
         Logger::error( std::string("Exception in client handler: ") + e.what() );
     } catch (...) {
         Logger::error( "Unknown exception in client handler O_o" );
     }
-    // Decrement client counter
-    std::lock_guard<std::mutex> lock(client_count_mutex);
-    /* Critical section begins */
-    --active_clients;
-    Logger::info( "Active clients: " + std::to_string(active_clients) );
-    /* Critical section ends */
 }
