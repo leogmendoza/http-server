@@ -20,6 +20,17 @@ ClientHandler::ClientHandler(Socket socket, sockaddr_in client_addr):
 
 void ClientHandler::run() {
     try {
+        // Decrement client counter even during early returns
+        struct ClientCountGuard {
+            ~ClientCountGuard() {
+                    std::lock_guard<std::mutex> lock(client_count_mutex);
+                    /* Critical section begins */
+                    --active_clients;
+                    Logger::info( "Active clients: " + std::to_string(active_clients) );
+                    /* Critical section ends */
+                }
+        } guard;
+
         // Grab socket number and client IP address
         char ip_str[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(client_addr_.sin_addr), ip_str, INET_ADDRSTRLEN);
@@ -106,13 +117,6 @@ void ClientHandler::run() {
             current_bytes += bytes_sent;
         }
         Logger::info( "Client handler ending for socket " + std::to_string(client_socket_.get()) );
-
-        // Decrement client counter
-        std::lock_guard<std::mutex> lock(client_count_mutex);
-        /* Critical section begins */
-        --active_clients;
-        Logger::info( "Active clients: " + std::to_string(active_clients) );
-    /* Critical section ends */
     } catch (const std::exception& e) {
         Logger::error( std::string("Exception in client handler: ") + e.what() );
     } catch (...) {
