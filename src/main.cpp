@@ -32,12 +32,14 @@ int main() {
                         ClientHandler handler(std::move(socket), addr);
 
                         // Increment client counter
-                        std::lock_guard<std::mutex> lock(client_count_mutex);
-                        /* Critical section begins */
-                        ++active_clients;
-                        Logger::info( "Active clients: " + std::to_string(active_clients) );
-                        /* Critical section ends */
-
+                        {
+                            std::lock_guard<std::mutex> lock(client_count_mutex);
+                            /* Critical section begins */
+                            ++active_clients;
+                            /* Critical section ends */
+                            
+                            Logger::info( "Active clients: " + std::to_string(active_clients) );
+                        }
                         handler.run();
                     }, 
                     // Lambda args

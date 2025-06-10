@@ -20,14 +20,15 @@ ClientHandler::ClientHandler(Socket socket, sockaddr_in client_addr):
 
 void ClientHandler::run() {
     try {
-        // Decrement client counter even during early returns
+        // Decrement client counter even during early exits
         struct ClientCountGuard {
             ~ClientCountGuard() {
                     std::lock_guard<std::mutex> lock(client_count_mutex);
                     /* Critical section begins */
                     --active_clients;
-                    Logger::info( "Active clients: " + std::to_string(active_clients) );
                     /* Critical section ends */
+
+                    Logger::info( "Active clients: " + std::to_string(active_clients) );
                 }
         } guard;
 
