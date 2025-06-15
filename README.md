@@ -13,16 +13,16 @@ During my co-op at Xandar Kardian, I did a bit of backend development... but I a
   Lets clients talk to the server using sockets (OSI L5) on top of TCP/IP (OSI L4/L3)
   
 - **HTTP Parsing & Routing**:  
-  Decodes HTTP requests and retrieves the appropriate content 
+  Decodes HTTP GET requests and retrieves the appropriate content 
 
 - **Static File Serving**:  
   Serves HTML files and PNG images directly from `public/`  
 
 - **Multithreaded Client Handling**:  
-  Many requests from different clients can be handled concurrently
+  Many requests from different clients can be served concurrently
 
 - **Modular Design**:  
-  Utilizes OOP for a clean codebase and RAII to clean up runtime resources
+  Utilizes RAII and OOP principles to safely clean up resources and for an even cleaner codebase
 
 - **Server Logging**:  
   Logs time-stamped server activity with pretty colours >_*
@@ -57,5 +57,12 @@ During my co-op at Xandar Kardian, I did a bit of backend development... but I a
 ## Demos/Screenshots
 ⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
 
-## Future Features
-lol just implementing the GET method was one too many T_T
+## Future Feature Wishlist
+- **Thread Pool**:  
+  I wanna concurrencymax!!!
+
+- **POST Request Support**:
+  As if one HTTP method wasn't enough T_T
+
+- **Encrypt with TLS**
+  Who even cares about network security?? >:/
