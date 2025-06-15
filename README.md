@@ -2,15 +2,36 @@
 
 ## Overview
 
+### What?
+This project is a web server built without **ANY external libraries**!😱 Using only the C++ std library and the Windows Socket API, it delivers resources to clients over HTTP.  
+
 ### Why? 🗿
-During my co-op at Xandar Kardian, I gained a bit of experience in backend development... but I always wondered how server calls worked at a lower level. So why _not_ create a web server that handles HTTP requests myself?
-⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
+During my co-op at Xandar Kardian, I did a bit of backend development... but I always wondered how server calls worked at a lower level. So why _not_ create a web server that handles HTTP requests myself?
 
 ### Features
-⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
+- **TCP/IP Connection Handling**  
+  Manages client connections using raw system calls through the Windows Socket API   
+  
+- **HTTP Parsing & Routing**  
+  Manually parses HTTP requests and routes them to the designated file path (ex. `/`, `about`)   
+
+- **Static File Serving**  
+  Serves HTML and PNG image files directly from the `public/` directory using standard file I/O   
+
+- **Multithreaded Client Handling**  
+  Spawns a new `std::thread` for each incoming client, allowing concurrent request handling   
+
+- **RAII-Based Connection Tracking**  
+  Tracks live client count safely using mutexes and RAII design patterns to manage shared state   
+
+- **Custom Logger with Timestamps & Colors**  
+  Prints tagged logs with ANSI colors and timestamps to help trace activity
+
+- **Modular Architecture**  
+  Organized into reusable components (`TcpServer`, `Socket`, `ClientHandler`, `Router`, `Logger`)
 
 ### Learnings
-⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
+- TCP/IP
 
 ## Run It! 🙏
 
