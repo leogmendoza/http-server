@@ -3,12 +3,10 @@
 ## Overview
 
 ### 🤔 What? 
-This project is a web server built without **ANY external libraries**!😱  
-Using only the C++ std library and Windows Socket API, it can respond to HTTP requests from clients and serve them content.  
+This project is a multithreaded web server built without **ANY external libraries**!😱 Using only the C++ std library and Windows Socket API, it can respond to HTTP requests from clients and serve them content.  
 
 ### 🗿 Why? 
-During my co-op at Xandar Kardian, I did a bit of backend development... but I always wondered how server calls worked at a lower level.  
-So why _not_ create a HTTP server that connects to clients and handles requests/responses myself?
+During my co-op at Xandar Kardian, I did a bit of backend development... but I always wondered how server calls worked at a lower level. So why _not_ create a HTTP server that connects to clients and handles requests/responses myself?
 
 ### Features
 - **TCP/IP Connection Handling**:   
@@ -23,10 +21,10 @@ So why _not_ create a HTTP server that connects to clients and handles requests/
 - **Multithreaded Client Handling**:  
   Many requests from different clients can be handled concurrently
 
-- **Modular Design**  
+- **Modular Design**:  
   Utilizes OOP for a clean codebase and RAII to clean up runtime resources
 
-- **Server Logging**:
+- **Server Logging**:  
   Logs time-stamped server activity with pretty colours >_*
 
 ## 🙏 Run It!
