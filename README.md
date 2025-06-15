@@ -61,8 +61,8 @@ During my co-op at Xandar Kardian, I did a bit of backend development... but I a
 - **Thread Pool**:  
   I wanna concurrencymax!!!
 
-- **POST Request Support**:
+- **POST Request Support**:  
   As if one HTTP method wasn't enough T_T
 
-- **Encrypt with TLS**
+- **Encrypt with TLS**:  
   Who even cares about network security?? >:/
