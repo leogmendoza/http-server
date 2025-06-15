@@ -3,10 +3,11 @@
 ## Overview
 
 ### What?
-This project is a web server built without **ANY external libraries**!😱 Using only the C++ std library and the Windows Socket API, it delivers resources to clients over HTTP.  
+This project is a web server built without **ANY external libraries**!😱  
+Using only the C++ std library and Windows Socket API, it can deliver resources to clients over HTTP.  
 
 ### Why? 🗿
-During my co-op at Xandar Kardian, I did a bit of backend development... but I always wondered how server calls worked at a lower level. So why _not_ create a web server that handles HTTP requests myself?
+During my co-op at Xandar Kardian, I did a bit of backend development... but I always wondered how server calls worked at a lower level. So why _not_ create a HTTP server that connects to clients and handles requests/responses myself?
 
 ### Features
 - **TCP/IP Connection Handling**  
