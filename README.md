@@ -54,8 +54,16 @@ During my co-op at Xandar Kardian, I did a bit of backend development... but I a
    ./http_server
 7. In your browser, visit: [http://localhost:8080/](http://localhost:8080/)
 
-## Demos/Screenshots
-⚠️⚠️⚠️UNDER CONSTRUCTION⚠️⚠️⚠️
+## Demos
+
+- **HTTP Server Application with Logger**  
+<img src="demo/logging_demo.gif" width="60%">
+
+- **Browser Page at** `localhost:8080`  
+<img src="demo/website_demo.gif" width="60%">
+
+- **HTTP Responses to Client using** `curl`  
+<img src="demo/response_demo.gif" width="60%">
 
 ## Future Feature Wishlist
 - **Thread Pool**:  
