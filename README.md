@@ -74,3 +74,9 @@ During my co-op at Xandar Kardian, I did a bit of backend development... but I a
 
 - **Encrypt with TLS**:  
   Who even cares about network security?? >:/
+
+## Resources
+
+- [Beej's Guide to Network Programming](https://beej.us/guide/bgnet/html/)
+- ["Intro to TCP/IP and Sockets" by Rhymu's Videos](https://youtu.be/C7CpfL1p6y0?si=tb-PaQ4fPDSQJy7H)
+- ["building an http server from scratch" by isak](https://youtu.be/jYmWEgmOcGQ?si=2t5iS6J5esXyvHW5)
